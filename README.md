@@ -46,6 +46,18 @@ Since this software communicates via messages between modules every configuratio
 #### Philips Hue support
 In the section PhilipsHue you can list up your lights and you need to configure your philips hue bridge ip and key.
 
+#### Telldus (tellstick) support
+With the Homecontrol Client this software can use telldus / tellstick lights and remote controllers / lightswitches.
+You need to list up lights in the same way in the Telldus section as for Philips hue lights.
+
+#### Remote Client support (RemoteManager)
+In the section RemoteManager all command ids of the messages (defined in MessageMetaData.h) which needs to be forwarded activly to the Remote Client. 
+
+#### Sonos integration
+You can configure one Sonos Loudspeaker at the moment which will be possible to be controlled.
+This software uses the offical API from Sonos.
+To use this you need to register a developer account for Sonos and configure your application in the Sonos API.
+
 ```
 {
 	"Configuration": {
