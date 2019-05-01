@@ -7,11 +7,17 @@ A Temperature sensor will send a message to all subscribers (e.g. logging module
 
 ## Prerequisites:
 Windows 10, 8.1, 7, Linux
+
 Visual Studio 2017 or newer (on Windows)
+
 gcc (on Linux)
+
 Git
+
 vcpkg
+
 cpprestsdk
+
 
 # Instructions
 ### Windows
