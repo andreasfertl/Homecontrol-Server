@@ -2,6 +2,7 @@
 A Homecontrol Server application which runs without any HW dependencies and uses multithreading and messages to communicate between modules.
 
 For Example:
+
 A Lightswitch will send a message to the appropiate light with on/off.
 
 A Temperature sensor will send a message to all subscribers (e.g. logging module) 
