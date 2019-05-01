@@ -3,6 +3,7 @@ A Homecontrol Server application which runs without any HW dependencies and uses
 
 For Example:
 A Lightswitch will send a message to the appropiate light with on/off.
+
 A Temperature sensor will send a message to all subscribers (e.g. logging module) 
 
 ## Prerequisites:
