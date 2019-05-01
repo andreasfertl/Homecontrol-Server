@@ -35,7 +35,7 @@ In the homecontrol folder you find the Makefile.
 ```
 Linux:~/LinuxServer$ cd homecontrol
 Linux:~/LinuxServer/homecontrol$ make
-Linux:~/LinuxServer/$ ./LinuxServer
+Linux:~/LinuxServer/homecontrol$ ./LinuxServer
 ```
 
 # Configuration
