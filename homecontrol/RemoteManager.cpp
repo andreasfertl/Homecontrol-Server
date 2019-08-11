@@ -16,7 +16,9 @@ RemoteManager::RemoteManager(IPrint& iPrint, struct IGetConfiguration& iGetConfi
 	m_CallbackTracker(),
 	m_SendQueue(),
 	m_TCPServer(5005, std::bind(&RemoteManager::ReceiveMessage, this, std::placeholders::_1), this->m_SendQueue),
-	m_RuntimeMessageHandler(iRuntimeRegister.RegisterRuntime({ StringTools::AsWstring(__FILE__), runtimeId::RemoteManager, std::chrono::milliseconds(100) }, *this))
+	m_TCPServer2(5006, std::bind(&RemoteManager::ReceiveMessage, this, std::placeholders::_1), this->m_SendQueue), 
+	m_RuntimeMessageHandler(iRuntimeRegister.RegisterRuntime({ StringTools::AsWstring(__FILE__), runtimeId::RemoteManager, std::chrono::milliseconds(100) }, *this)),
+	m_ISubscribe(iSubscribe)
 {
 	//maybe subscribe all?
 	auto subscribeToIds = iGetConfiguration.GetConfigurationRemoteManager();
@@ -34,7 +36,14 @@ RemoteManager::~RemoteManager()
 void RemoteManager::ReceiveMessage(const std::string& message)
 {
 	auto msg = Message(message);
-	m_RuntimeMessageHandler.SendMessage(msg);
+	if (msg.GetCmd() == Cmd::Write && msg.GetId() == Id::Subscribe)
+	{
+		if (auto subscribeTo = msg.GetValue<int>(&m_IPrint))
+			m_ISubscribe.Subscribe({ static_cast<Id>(*subscribeTo), m_RuntimeMessageHandler });
+	}
+	else {
+		m_RuntimeMessageHandler.SendMessage(msg);
+	}
 }
 
 void RemoteManager::Callback()

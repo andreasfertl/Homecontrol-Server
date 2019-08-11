@@ -30,7 +30,9 @@ private:
 	std::map<unsigned int, CallbackTracking> m_CallbackTracker;
 	CallbackQueue m_SendQueue;
 	TCPServer m_TCPServer;
+	TCPServer m_TCPServer2;
 	struct IRuntimeMessageHandling& m_RuntimeMessageHandler;
+	struct ISubscribe& m_ISubscribe;
 
 	void ReceiveMessage(const std::string& message);
 };

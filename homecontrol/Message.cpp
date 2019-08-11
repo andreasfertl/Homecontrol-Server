@@ -56,6 +56,18 @@ namespace {
 #endif 
 			value = BluetoothDevice(macAddr, inRange);
 		}
+		else if (id == Id::Subscribe)
+		{
+			//id to subscribe to
+			value = data.as_integer();
+		}
+		else if (id == Id::LightState)
+		{
+			//id to subscribe to
+			auto id = data[U("ID")].as_integer();
+			auto onOff = data[U("LightState")].as_integer() ? true : false;
+			value = MessageLightState(id, onOff);
+		}
 
 		return std::make_tuple(cmd, id, value);
 	}
@@ -120,6 +132,22 @@ std::string Message::AsJson() const
 		msg[U("Value")][U("$type")] = web::json::value::string(U("Messanger.LightMessage, Messanger"));
 		msg[U("Value")][U("ID")] = web::json::value::number(val.m_Id);
 		msg[U("Value")][U("LightState")] = web::json::value::number(static_cast<int>(val.m_On));
+
+#ifdef _WIN32
+		auto serialized = StringTools::AsString(msg.serialize());
+#else 
+		auto serialized = msg.serialize();
+#endif 
+		return serialized;
+	}
+	else if (m_Id == Id::MandolynSensor)
+	{
+		auto val = std::any_cast<MandolynSensor>(m_Value);
+
+		msg[U("Value")][U("$type")] = web::json::value::string(U("Messanger.MandolynSensor, Messanger"));
+		msg[U("Value")][U("Id")] = web::json::value::number(val.GetId());
+		msg[U("Value")][U("Temp")] = web::json::value::number(static_cast<float>(val.GetTemp()));
+		msg[U("Value")][U("Humidity")] = web::json::value::number(val.GetHumidity());
 
 #ifdef _WIN32
 		auto serialized = StringTools::AsString(msg.serialize());

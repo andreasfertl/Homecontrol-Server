@@ -29,6 +29,6 @@ private:
 	TelldusManager          m_TelldusManager;
 	HueManager		        m_HueManager;
 	MappingManager          m_MappingManager;
-	SonosManager            m_SonosManager;
+	//SonosManager            m_SonosManager;
 };
 
