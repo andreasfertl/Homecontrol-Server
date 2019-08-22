@@ -8,7 +8,7 @@
 class SonosManager : public IRuntime
 {
 public:
-	SonosManager(struct IPrint& iPrint, struct IGetConfiguration& iGetConfiguration, struct IRuntimeRegister& iRuntimeRegister, ISubscribe& iSubscribe);
+	SonosManager(struct IPrint& iPrint, struct IConfigurationSonos& iGetConfiguration, struct IRuntimeRegister& iRuntimeRegister, ISubscribe& iSubscribe);
 	~SonosManager();
 
 	//IRuntime

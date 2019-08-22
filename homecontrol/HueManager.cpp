@@ -13,7 +13,7 @@ namespace {
 		Logg(iPrint, L"Name: " << name << L" ID: " << id << L" internal ID: " << lampId);
 	}
 
-	std::vector<Light> AddLights(IPrint& iPrint, struct IGetConfiguration& iGetConfiguration, HueClient& hueClient)
+	std::vector<Light> AddLights(IPrint& iPrint, struct IConfigurationPhilipsHue& iGetConfiguration, HueClient& hueClient)
 	{
 		std::vector<Light> lights;
 
@@ -25,7 +25,7 @@ namespace {
 	}
 
 }
-HueManager::HueManager(IPrint& iPrint, struct IGetConfiguration& iGetConfiguration, IRuntimeRegister& iRuntimeRegister, ISubscribe& iSubscribe) :
+HueManager::HueManager(IPrint& iPrint, struct IConfigurationPhilipsHue& iGetConfiguration, IRuntimeRegister& iRuntimeRegister, ISubscribe& iSubscribe) :
 	m_IPrint(iPrint),
 	m_RuntimeMessageHandler(iRuntimeRegister.RegisterRuntime({ StringTools::AsWstring(__FILE__), runtimeId::HueManager, std::chrono::milliseconds(100) }, *this)),
 	m_HueClient(iGetConfiguration.GetConfigurationPhilipsHue().m_Ip, iGetConfiguration.GetConfigurationPhilipsHue().m_Key),

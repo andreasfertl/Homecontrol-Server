@@ -18,7 +18,7 @@ public:
 class RemoteManager : public IRuntime
 {
 public:
-	RemoteManager(struct IPrint& iPrint, struct IGetConfiguration& iGetConfiguration, struct IRuntimeRegister& iRuntimeRegister, struct ISubscribe& iSubscribe);
+	RemoteManager(struct IPrint& iPrint, struct IConfigurationRemoteManager& iGetConfiguration, struct IRuntimeRegister& iRuntimeRegister, struct ISubscribe& iSubscribe);
 	~RemoteManager();
 
 	//IRuntime

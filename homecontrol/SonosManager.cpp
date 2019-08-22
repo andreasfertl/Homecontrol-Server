@@ -12,7 +12,7 @@ using namespace web;
 using namespace web::http;
 using namespace web::http::client;
 
-SonosManager::SonosManager(IPrint& iPrint, struct IGetConfiguration& iGetConfiguration, IRuntimeRegister& iRuntimeRegister, ISubscribe& iSubscribe) :
+SonosManager::SonosManager(IPrint& iPrint, struct IConfigurationSonos& iGetConfiguration, IRuntimeRegister& iRuntimeRegister, ISubscribe& iSubscribe) :
 	m_IPrint(iPrint),
 	m_Configuration(iGetConfiguration.GetConfigurationSonos()),
 	m_Oauth(m_IPrint, m_Configuration.m_Secret, m_Configuration.m_Key, m_Configuration.m_AuthUrl, m_Configuration.m_TokenUrl, m_Configuration.m_Scope, m_Configuration.m_RedirectUrl),

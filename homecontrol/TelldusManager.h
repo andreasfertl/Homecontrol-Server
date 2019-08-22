@@ -8,7 +8,7 @@
 class TelldusManager : public IRuntime
 {
 public:
-	TelldusManager(struct IPrint& iPrint, struct IGetConfiguration& iGetConfiguration, struct IRuntimeRegister& iRuntimeRegister, struct ISubscribe& iSubscribe);
+	TelldusManager(struct IPrint& iPrint, struct IConfigurationTelldus& iGetConfiguration, struct IRuntimeRegister& iRuntimeRegister, struct ISubscribe& iSubscribe);
 	~TelldusManager();
 
 	//IRuntime

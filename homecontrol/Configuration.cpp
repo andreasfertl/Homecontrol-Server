@@ -173,19 +173,19 @@ public:
 
 	}
 
-	const ConfigurationSonos& GetConfigurationSonos() {
+	const ConfigurationSonos& GetConfigurationSonos() override {
 		return m_ConfigurationSonos;
 	}
 
-	const ConfigurationPhilipsHue& GetConfigurationPhilipsHue() {
+	const ConfigurationPhilipsHue& GetConfigurationPhilipsHue() override {
 		return m_ConfigurationPhilipsHue;
 	}
 
-	const ConfigurationTelldus& GetConfigurationTelldus() {
+	const ConfigurationTelldus& GetConfigurationTelldus() override {
 		return m_ConfigurationTelldus;
 	}
 
-	const ConfigurationRemoteManager& GetConfigurationRemoteManager() {
+	const ConfigurationRemoteManager& GetConfigurationRemoteManager() override {
 		return m_ConfigurationRemoteManager;
 	}
 

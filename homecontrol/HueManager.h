@@ -10,7 +10,7 @@
 class HueManager : public IRuntime
 {
 public:
-	HueManager(struct IPrint& iPrint, struct IGetConfiguration& iGetConfiguration, struct IRuntimeRegister& iRuntimeRegister, ISubscribe& iSubscribe);
+	HueManager(struct IPrint& iPrint, struct IConfigurationPhilipsHue& iGetConfiguration, struct IRuntimeRegister& iRuntimeRegister, ISubscribe& iSubscribe);
 	~HueManager();
 
 	//IRuntime

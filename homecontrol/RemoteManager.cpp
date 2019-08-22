@@ -11,7 +11,7 @@
 
 
 
-RemoteManager::RemoteManager(IPrint& iPrint, struct IGetConfiguration& iGetConfiguration, IRuntimeRegister& iRuntimeRegister, ISubscribe& iSubscribe) :
+RemoteManager::RemoteManager(IPrint& iPrint, struct IConfigurationRemoteManager& iGetConfiguration, IRuntimeRegister& iRuntimeRegister, ISubscribe& iSubscribe) :
 	m_IPrint(iPrint),
 	m_CallbackTracker(),
 	m_SendQueue(),

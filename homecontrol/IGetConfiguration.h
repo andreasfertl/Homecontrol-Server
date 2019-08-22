@@ -76,9 +76,23 @@ public:
 	const std::vector<unsigned int> m_IdsToSubscribe;
 };
 
-struct IGetConfiguration {
+struct IConfigurationSonos {
 	virtual const ConfigurationSonos& GetConfigurationSonos() = 0;
-	virtual const ConfigurationPhilipsHue& GetConfigurationPhilipsHue() = 0;
+};
+
+struct IConfigurationTelldus {
 	virtual const ConfigurationTelldus& GetConfigurationTelldus() = 0;
+};
+
+struct IConfigurationPhilipsHue {
+	virtual const ConfigurationPhilipsHue& GetConfigurationPhilipsHue() = 0;
+};
+
+struct IConfigurationRemoteManager {
 	virtual const ConfigurationRemoteManager& GetConfigurationRemoteManager() = 0;
+};
+
+
+struct IGetConfiguration : public IConfigurationSonos, public IConfigurationTelldus, public IConfigurationPhilipsHue, public IConfigurationRemoteManager {
+
 };

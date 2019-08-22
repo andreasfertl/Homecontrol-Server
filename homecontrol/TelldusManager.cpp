@@ -20,7 +20,7 @@ namespace {
 
 }
 
-TelldusManager::TelldusManager(IPrint& iPrint, struct IGetConfiguration& iGetConfiguration, IRuntimeRegister& iRuntimeRegister, ISubscribe& iSubscribe) :
+TelldusManager::TelldusManager(IPrint& iPrint, struct IConfigurationTelldus& iGetConfiguration, IRuntimeRegister& iRuntimeRegister, ISubscribe& iSubscribe) :
 	m_IPrint(iPrint),
 	m_Lights(),
 	m_RuntimeMessageHandler(iRuntimeRegister.RegisterRuntime({ StringTools::AsWstring(__FILE__), runtimeId::TelldusManager, std::chrono::milliseconds(100) }, *this)),

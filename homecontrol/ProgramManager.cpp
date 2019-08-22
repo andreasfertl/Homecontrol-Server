@@ -1,4 +1,5 @@
 #include "ProgramManager.h"
+#include "IGetConfiguration.h"
 #include "IPrint.h"
 
 
