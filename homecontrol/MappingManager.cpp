@@ -9,6 +9,7 @@
 #include "MessageLightState.h"
 #include "BluetoothDevice.h"
 #include "Logging.h"
+#include "MandloynSensor.h"
 
 namespace {
 
@@ -45,7 +46,7 @@ MappingManager::~MappingManager()
 }
 
 
-static unsigned int state = 0;
+static unsigned int state = 2;
 
 void MappingManager::Callback()
 {
@@ -53,7 +54,7 @@ void MappingManager::Callback()
 	switch (state)
 	{
 	case 0:
-		std::this_thread::sleep_for(std::chrono::seconds(15));
+		std::this_thread::sleep_for(std::chrono::seconds(5));
 		state = 1;
 		break;
 	case 1:
@@ -68,8 +69,11 @@ void MappingManager::Callback()
 		m_Thread.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1014, true)));
 		m_Thread.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1015, true)));
 		m_Thread.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1016, true)));*/
-		m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::SoundPause));
-		state = 2;
+		//m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::SoundPause));
+		m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::MandolynSensor, MandolynSensor(21, 18.4f, 56)));
+		m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::MandolynSensor, MandolynSensor(11, 17.2f, 75)));
+		m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::MandolynSensor, MandolynSensor(12, 22.1f, 41)));
+		state = 0;
 		break;
 
 	default:

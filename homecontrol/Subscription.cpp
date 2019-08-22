@@ -14,6 +14,7 @@ Subscription::~Subscription()
 
 void Subscription::Subscribe(const SubscriptionData&& subscription) 
 {
+	//TBD needs to be thread safe!!!
 	Logg(m_IPrint, L"Subscribing to: " << static_cast<int>(subscription.GetId()));
 	if (std::find(m_Subscribers.begin(), m_Subscribers.end(), subscription) == m_Subscribers.end())
 		m_Subscribers.emplace_back(subscription);

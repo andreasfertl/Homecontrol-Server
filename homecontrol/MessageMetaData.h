@@ -12,6 +12,7 @@ enum class Id {
 	TelldusDeviceSetState = 18,
 	SoundPlay,
 	SoundPause,
+	Subscribe = 21,
 };
 
 enum class Cmd {
