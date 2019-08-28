@@ -12,6 +12,7 @@
 #include "Configuration.h"
 #include "TCPHandler.h"
 #include "networkReceiveHandler.h"
+#include "networkMessageHandler.h"
 
 class ProgramManager
 {
@@ -31,8 +32,9 @@ private:
 	TelldusManager          m_TelldusManager;
 	HueManager		        m_HueManager;
 	MappingManager          m_MappingManager;
-	TCPHandler				m_TCPHandler;
 	netWorkReceiveHandler   m_NetworkReceiveHandler;
+	networkMessageHandler   m_NetworkMessageHandler;
+	TCPHandler				m_TCPHandler;
 	//SonosManager            m_SonosManager;
 };
 

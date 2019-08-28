@@ -45,9 +45,6 @@
     <ClInclude Include="Runner.h">
       <Filter>Header Files\Run</Filter>
     </ClInclude>
-    <ClInclude Include="RunQueue.h">
-      <Filter>Header Files\Run</Filter>
-    </ClInclude>
     <ClInclude Include="IPrint.h">
       <Filter>Header Files\Run</Filter>
     </ClInclude>
@@ -198,12 +195,12 @@
     <ClInclude Include="networkReceiveHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="networkMessageHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Message.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RunQueue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PrintQueue.cpp">
@@ -282,6 +279,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="networkReceiveHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="networkMessageHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

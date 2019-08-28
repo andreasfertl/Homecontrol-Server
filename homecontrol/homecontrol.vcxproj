@@ -197,6 +197,7 @@
     <ClInclude Include="Message.h" />
     <ClInclude Include="MessageLightState.h" />
     <ClInclude Include="MessageMetaData.h" />
+    <ClInclude Include="networkMessageHandler.h" />
     <ClInclude Include="networkReceiveHandler.h" />
     <ClInclude Include="OAuth2.h" />
     <ClInclude Include="PreparseMessage.h" />
@@ -207,7 +208,6 @@
     <ClInclude Include="RemoteManager.h" />
     <ClInclude Include="RemoteTelldus.h" />
     <ClInclude Include="Runner.h" />
-    <ClInclude Include="RunQueue.h" />
     <ClInclude Include="seriealizeFunctions.h" />
     <ClInclude Include="SonosClient.h" />
     <ClInclude Include="SonosConnection.h" />
@@ -231,6 +231,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MappingManager.cpp" />
     <ClCompile Include="Message.cpp" />
+    <ClCompile Include="networkMessageHandler.cpp" />
     <ClCompile Include="networkReceiveHandler.cpp" />
     <ClCompile Include="OAuth2.cpp" />
     <ClCompile Include="PreParseMessagecpp.cpp" />
@@ -238,7 +239,6 @@
     <ClCompile Include="ProgramManager.cpp" />
     <ClCompile Include="RemoteManager.cpp" />
     <ClCompile Include="RemoteTelldus.cpp" />
-    <ClCompile Include="RunQueue.cpp" />
     <ClCompile Include="serializeFunctions.cpp" />
     <ClCompile Include="SonosClient.cpp" />
     <ClCompile Include="SonosConnection.cpp" />

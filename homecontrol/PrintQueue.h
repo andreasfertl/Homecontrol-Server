@@ -1,10 +1,10 @@
 #pragma once
 
-#include "RunQueue.h"
+#include "seriealizeFunctions.h"
 #include "IPrint.h"
 
 
-class PrintQueue : private RunQueue, public IPrint {
+class PrintQueue : private seriealizeFunctions, public IPrint {
 
 public:
 	PrintQueue();

@@ -6,4 +6,5 @@ enum class runtimeId {
 	RemoteManager,
 	SonosManager,
 	MappingManager,
+	NetworkMessageHandler,
 };

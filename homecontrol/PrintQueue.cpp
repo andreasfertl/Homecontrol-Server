@@ -12,7 +12,7 @@ PrintQueue::~PrintQueue()
 
 void PrintQueue::Print(const std::wstring& str)
 {
-	Run([str]() {
+	run([str]() {
 		std::wcout << str;
 	});
 }
