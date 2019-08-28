@@ -183,6 +183,21 @@
     <ClInclude Include="IGetConfiguration.h">
       <Filter>Header Files\Configuration</Filter>
     </ClInclude>
+    <ClInclude Include="TCPHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="iNetworkReceive.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="iRun.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="seriealizeFunctions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="networkReceiveHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Message.cpp">
@@ -258,6 +273,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Configuration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TCPHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="serializeFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="networkReceiveHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

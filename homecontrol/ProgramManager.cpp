@@ -1,6 +1,10 @@
 #include "ProgramManager.h"
 #include "IGetConfiguration.h"
 #include "IPrint.h"
+#include "iNetworkReceive.h"
+#include "Logging.h"
+
+
 
 
 ProgramManager::ProgramManager(IPrint& iPrint) :
@@ -13,7 +17,9 @@ ProgramManager::ProgramManager(IPrint& iPrint) :
 	m_TelldusManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription),
 	m_HueManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription),
 	m_MappingManager(iPrint, m_ThreadManager, m_Subscription),
-	m_SonosManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription)
+	m_NetworkReceiveHandler(iPrint),
+	m_TCPHandler(80000, m_NetworkReceiveHandler)
+	//m_SonosManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription)
 {
 }
 

@@ -104,7 +104,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>C:\Users\andref\vcpkg\installed\x86-windows\debug\lib\cpprest_2_10d.lib;C:\Users\andref\vcpkg\installed\x86-windows\debug\lib\boost_system-vc140-mt-gd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>C:\Users\andref\vcpkg\installed\x86-windows\debug\lib\cpprest_2_10d.lib;C:\Users\andref\vcpkg\installed\x86-windows\debug\lib\boost_system-vc140-mt-gd.lib;C:\Users\andref\vcpkg\installed\x86-windows\debug\lib\boost_coroutine-vc140-mt-gd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -174,7 +174,9 @@
     <ClInclude Include="HueClient.h" />
     <ClInclude Include="ICallbacks.h" />
     <ClInclude Include="IGetConfiguration.h" />
+    <ClInclude Include="iNetworkReceive.h" />
     <ClInclude Include="IOauth2.h" />
+    <ClInclude Include="iRun.h" />
     <ClInclude Include="IRuntimeMessageProcessing.h" />
     <ClInclude Include="ISonosCMDs.h" />
     <ClInclude Include="ISonosConnection.h" />
@@ -195,6 +197,7 @@
     <ClInclude Include="Message.h" />
     <ClInclude Include="MessageLightState.h" />
     <ClInclude Include="MessageMetaData.h" />
+    <ClInclude Include="networkReceiveHandler.h" />
     <ClInclude Include="OAuth2.h" />
     <ClInclude Include="PreparseMessage.h" />
     <ClInclude Include="PrintQueue.h" />
@@ -205,6 +208,7 @@
     <ClInclude Include="RemoteTelldus.h" />
     <ClInclude Include="Runner.h" />
     <ClInclude Include="RunQueue.h" />
+    <ClInclude Include="seriealizeFunctions.h" />
     <ClInclude Include="SonosClient.h" />
     <ClInclude Include="SonosConnection.h" />
     <ClInclude Include="SonosManager.h" />
@@ -212,6 +216,7 @@
     <ClInclude Include="Subscription.h" />
     <ClInclude Include="SynchronosThread.h" />
     <ClInclude Include="SynchronosThreadManager.h" />
+    <ClInclude Include="TCPHandler.h" />
     <ClInclude Include="TCPServer.h" />
     <ClInclude Include="TelldusManager.h" />
     <ClInclude Include="Thread.h" />
@@ -226,6 +231,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MappingManager.cpp" />
     <ClCompile Include="Message.cpp" />
+    <ClCompile Include="networkReceiveHandler.cpp" />
     <ClCompile Include="OAuth2.cpp" />
     <ClCompile Include="PreParseMessagecpp.cpp" />
     <ClCompile Include="PrintQueue.cpp" />
@@ -233,6 +239,7 @@
     <ClCompile Include="RemoteManager.cpp" />
     <ClCompile Include="RemoteTelldus.cpp" />
     <ClCompile Include="RunQueue.cpp" />
+    <ClCompile Include="serializeFunctions.cpp" />
     <ClCompile Include="SonosClient.cpp" />
     <ClCompile Include="SonosConnection.cpp" />
     <ClCompile Include="SonosManager.cpp" />
@@ -240,6 +247,7 @@
     <ClCompile Include="Subscription.cpp" />
     <ClCompile Include="SynchronosThread.cpp" />
     <ClCompile Include="SynchronosThreadManager.cpp" />
+    <ClCompile Include="TCPHandler.cpp" />
     <ClCompile Include="TCPServer.cpp" />
     <ClCompile Include="TelldusManager.cpp" />
     <ClCompile Include="Thread.cpp" />

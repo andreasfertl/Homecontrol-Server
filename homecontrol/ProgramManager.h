@@ -10,6 +10,8 @@
 #include "ThreadManager.h"
 #include "SynchronosThreadManager.h"
 #include "Configuration.h"
+#include "TCPHandler.h"
+#include "networkReceiveHandler.h"
 
 class ProgramManager
 {
@@ -29,6 +31,8 @@ private:
 	TelldusManager          m_TelldusManager;
 	HueManager		        m_HueManager;
 	MappingManager          m_MappingManager;
+	TCPHandler				m_TCPHandler;
+	netWorkReceiveHandler   m_NetworkReceiveHandler;
 	//SonosManager            m_SonosManager;
 };
 
