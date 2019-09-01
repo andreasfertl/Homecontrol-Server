@@ -14,14 +14,13 @@
 #include "seriealizeFunctions.h"
 #include "queue.h"
 
-
-namespace {
+namespace network {
 	const std::string delimiter = "\r\n";
 	typedef unsigned int connectionHandle;
 	const unsigned int   connectionHandleMAXValue(UINT_MAX - 1);
 }
 
-class connection {
+class connection{
 
 	struct sendData
 	{
@@ -30,15 +29,16 @@ class connection {
 	};
 
 public:
-	connection(boost::asio::ip::tcp::acceptor& acceptor, boost::asio::yield_context& yield, boost::asio::io_service& ioService, const iNetworkReceive& receiveCallback, const std::function<void()>& disconnectCallback) :
+	connection(boost::asio::ip::tcp::acceptor& acceptor, boost::asio::yield_context& yield, boost::asio::io_service& ioService,
+		       const iNetworkReceive& receiveCallback, const std::function<void()>& disconnectCallback) :
 		m_Socket(ioService),
 		m_RxBuffer(),
 		m_ReceiveCallback(receiveCallback),
-		m_DisconnectCallback(disconnectCallback)
+		m_DisconnectCallback(disconnectCallback) 
 	{
 		acceptor.async_accept(m_Socket, yield);
 		if (m_Socket.is_open())
-			boost::asio::async_read_until(m_Socket, m_RxBuffer, delimiter, std::bind(&connection::readHandler, this, std::placeholders::_1, std::placeholders::_2));
+			boost::asio::async_read_until(m_Socket, m_RxBuffer, network::delimiter, std::bind(&connection::readHandler, this, std::placeholders::_1, std::placeholders::_2));
 	}
 
 	connection(const connection&) = delete;
@@ -58,10 +58,9 @@ public:
 			});
 	}
 
-private:
 	void sendMessage(const std::string& message) {
 		//reducing to just one copy with a shared ptr
-		auto messageToSend = std::make_shared<std::string>(message + delimiter);
+		auto messageToSend = std::make_shared<std::string>(message + network::delimiter);
 
 		//sending asynchronos with my own infrastructure with private data, to avoid a shared TXBuffer as a class member (as RX is using)
 		m_SendData.m_SendHandler.run([this, messageToSend]() {
@@ -83,6 +82,7 @@ private:
 			});
 	}
 
+private:
 	void readHandler(const boost::system::error_code & ec, size_t bytes_transferred) {
 		if (!ec) {
 			std::string message;
@@ -93,7 +93,7 @@ private:
 			//prepare fo next "line/message"
 			m_RxBuffer.consume(bytes_transferred);
 			if (m_Socket.is_open())
-				boost::asio::async_read_until(m_Socket, m_RxBuffer, delimiter, std::bind(&connection::readHandler, this, std::placeholders::_1, std::placeholders::_2));
+				boost::asio::async_read_until(m_Socket, m_RxBuffer, network::delimiter, std::bind(&connection::readHandler, this, std::placeholders::_1, std::placeholders::_2));
 		}
 		else if (ec == boost::asio::error::eof || ec == boost::asio::error::connection_reset) {
 			m_DisconnectCallback();
@@ -130,7 +130,7 @@ public:
 			m_Handler.join();
 	}
 
-	void disconnect(connectionHandle handle) {
+	void disconnect(network::connectionHandle handle) {
 		m_DisconnectedConnections.Push(handle);
 	}
 
@@ -141,7 +141,7 @@ public:
 	}
 
 	void accept(boost::asio::yield_context yield) {
-		connectionHandle handle(1);
+		network::connectionHandle handle(1);
 
 		while (!m_StopFlag) {
 			bool inserted(false);
@@ -149,18 +149,18 @@ public:
 			cleanupDisconnectedSessions();
 
 			//do we handle already to many sessions?
-			while (m_Connections.size() >= connectionHandleMAXValue) {
+			while (m_Connections.size() >= network::connectionHandleMAXValue) {
 				m_IOService.post(yield);
 				cleanupDisconnectedSessions(); //kind of wait for next slot
 			}
 
 			//did we manage to insert/instanciate our next client?
-			while (!inserted && m_Connections.size() < connectionHandleMAXValue)
+			while (!inserted && m_Connections.size() < network::connectionHandleMAXValue)
 			{
 				//instance one client connection and wait for next
 				inserted = m_Connections.try_emplace(handle, m_Acceptor, yield, m_IOService, m_ReceiveCallback, std::bind(&TCPHandlerImpl::disconnect, this, handle)).second;
 
-				if (handle >= connectionHandleMAXValue)
+				if (handle >= network::connectionHandleMAXValue)
 					handle = 1; //restart to find next free handle
 				else
 					handle++;
@@ -169,14 +169,22 @@ public:
 		}
 	}
 
+	//sending/forwarding to all connections
+	void sendToAllConnections(const std::string& message) {
+		for (auto& connection : m_Connections) {
+			connection.second.sendMessage(message);
+		}
+	}
+
+
 private:
-	std::atomic_bool				m_StopFlag;
-	boost::asio::io_service         m_IOService;
-	boost::asio::ip::tcp::acceptor  m_Acceptor;
-	const iNetworkReceive& m_ReceiveCallback;
-	std::map<connectionHandle, connection>  m_Connections;
-	Queue<connectionHandle>         m_DisconnectedConnections;
-	std::thread						m_Handler;
+	std::atomic_bool				                 m_StopFlag;
+	boost::asio::io_service                          m_IOService;
+	boost::asio::ip::tcp::acceptor                   m_Acceptor;
+	const iNetworkReceive&                           m_ReceiveCallback;
+	std::map<network::connectionHandle, connection>  m_Connections;
+	Queue<network::connectionHandle>                 m_DisconnectedConnections;
+	std::thread						                 m_Handler;
 };
 
 
@@ -188,6 +196,10 @@ TCPHandler::TCPHandler(unsigned int portNr, const iNetworkReceive & receiveCallb
 
 TCPHandler::~TCPHandler()
 {
+}
+
+void TCPHandler::sendToAllConnections(const std::string& message) {
+	m_TCPHandlerImpl->sendToAllConnections(message);
 }
 
 

@@ -5,18 +5,14 @@
 #include "IRuntimeRegister.h"
 #include "IGetConfiguration.h"
 #include "StringTools.h"
-#include "TCPServer.h"
 #include "MessageLightState.h"
 #include "Logging.h"
-
 
 
 RemoteManager::RemoteManager(IPrint& iPrint, struct IConfigurationRemoteManager& iGetConfiguration, IRuntimeRegister& iRuntimeRegister, ISubscribe& iSubscribe) :
 	m_IPrint(iPrint),
 	m_CallbackTracker(),
-	m_SendQueue(),
-	m_TCPServer(5005, std::bind(&RemoteManager::ReceiveMessage, this, std::placeholders::_1), this->m_SendQueue),
-	m_TCPServer2(5006, std::bind(&RemoteManager::ReceiveMessage, this, std::placeholders::_1), this->m_SendQueue), 
+	m_TCPHandler(5005, *this),
 	m_RuntimeMessageHandler(iRuntimeRegister.RegisterRuntime({ StringTools::AsWstring(__FILE__), runtimeId::RemoteManager, std::chrono::milliseconds(100) }, *this)),
 	m_ISubscribe(iSubscribe)
 {
@@ -32,28 +28,27 @@ RemoteManager::~RemoteManager()
 {
 }
 
-
-void RemoteManager::ReceiveMessage(const std::string& message)
-{
-	auto msg = Message(message);
-	if (msg.GetCmd() == Cmd::Write && msg.GetId() == Id::Subscribe)
-	{
-		if (auto subscribeTo = msg.GetValue<int>(&m_IPrint))
-			m_ISubscribe.Subscribe({ static_cast<Id>(*subscribeTo), m_RuntimeMessageHandler });
-	}
-	else {
-		m_RuntimeMessageHandler.SendMessage(msg);
-	}
-}
-
 void RemoteManager::Callback()
 {
 }
 
 void RemoteManager::HandleMessage(const Message & msg)
 {
-	//i received a msg, i will just relay the message to the remote peer
-	m_SendQueue.Push(msg.AsJson());
+	//i received a msg, i will just relay the message to all the remote peer(s)
+	m_TCPHandler.sendToAllConnections(msg.AsJson());
+}
+
+void RemoteManager::receive(const networkMessage& nwMessage) const
+{
+	auto msg = Message(nwMessage.m_Message);
+	if (msg.GetCmd() == Cmd::Write && msg.GetId() == Id::Subscribe) //need to subscribe for remote peer 
+	{
+		if (auto subscribeTo = msg.GetValue<int>(&m_IPrint))
+			m_ISubscribe.Subscribe({ static_cast<Id>(*subscribeTo), m_RuntimeMessageHandler });
+	}
+	else {
+		m_RuntimeMessageHandler.SendMessage(msg); //just forward message
+	}
 }
 
 

@@ -96,9 +96,6 @@
     <ClInclude Include="BluetoothDevice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TCPServer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RemoteManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -113,9 +110,6 @@
     </ClInclude>
     <ClInclude Include="MappingManager.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CallbackQueue.h">
-      <Filter>Header Files\Queue</Filter>
     </ClInclude>
     <ClInclude Include="OAuth2.h">
       <Filter>Header Files</Filter>
@@ -231,9 +225,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RemoteTelldus.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TCPServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RemoteManager.cpp">

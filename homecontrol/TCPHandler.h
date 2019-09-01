@@ -12,6 +12,8 @@ public:
 	TCPHandler(TCPHandler&&) = default;
 	TCPHandler& operator = (TCPHandler&&) = default;
 
+	void sendToAllConnections(const std::string& message);
+
 private:
 	std::unique_ptr<class TCPHandlerImpl> m_TCPHandlerImpl;
 };

@@ -2,8 +2,8 @@
 #include <atomic>
 #include <map>
 #include "IRuntime.h"
-#include "CallbackQueue.h"
-#include "TCPServer.h"
+#include "TCPHandler.h"
+#include "iNetworkReceive.h"
 
 struct CallbackTracking {
 
@@ -15,7 +15,7 @@ public:
 	std::function<void(const struct MessageLightState& msgLightState)> m_Callback;
 };
 
-class RemoteManager : public IRuntime
+class RemoteManager : public IRuntime, private iNetworkReceive
 {
 public:
 	RemoteManager(struct IPrint& iPrint, struct IConfigurationRemoteManager& iGetConfiguration, struct IRuntimeRegister& iRuntimeRegister, struct ISubscribe& iSubscribe);
@@ -25,16 +25,15 @@ public:
 	void Callback() override;
 	void HandleMessage(const Message& msg) override;
 
+	//iNetworkReceive
+	void receive(const networkMessage& nwMessage) const override;
+
 private:
 	struct IPrint& m_IPrint;
 	std::map<unsigned int, CallbackTracking> m_CallbackTracker;
-	CallbackQueue m_SendQueue;
-	TCPServer m_TCPServer;
-	TCPServer m_TCPServer2;
+	TCPHandler m_TCPHandler;
 	struct IRuntimeMessageHandling& m_RuntimeMessageHandler;
 	struct ISubscribe& m_ISubscribe;
-
-	void ReceiveMessage(const std::string& message);
 };
 
 
