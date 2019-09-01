@@ -19,7 +19,8 @@ ProgramManager::ProgramManager(IPrint& iPrint) :
 	m_MappingManager(iPrint, m_ThreadManager, m_Subscription),
 	m_NetworkMessageHandler(iPrint, m_ThreadManager, m_Subscription),
 	m_NetworkReceiveHandler(iPrint),
-	m_TCPHandler(30000, m_NetworkMessageHandler)
+	m_TCPHandler(30000, m_NetworkMessageHandler),
+	m_TCPHandler2(30001, m_NetworkReceiveHandler)
 	//m_SonosManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription)
 {
 }

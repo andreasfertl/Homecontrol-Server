@@ -35,6 +35,7 @@ private:
 	netWorkReceiveHandler   m_NetworkReceiveHandler;
 	networkMessageHandler   m_NetworkMessageHandler;
 	TCPHandler				m_TCPHandler;
+	TCPHandler				m_TCPHandler2;
 	//SonosManager            m_SonosManager;
 };
 
