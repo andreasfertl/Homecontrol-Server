@@ -170,15 +170,20 @@
     <ClInclude Include="ArctechSwitch.h" />
     <ClInclude Include="BluetoothDevice.h" />
     <ClInclude Include="Configuration.h" />
+    <ClInclude Include="HTTPServer.h" />
     <ClInclude Include="HueClient.h" />
     <ClInclude Include="ICallbacks.h" />
     <ClInclude Include="IGetConfiguration.h" />
+    <ClInclude Include="IGetSensor.h" />
+    <ClInclude Include="IJSONManager.h" />
     <ClInclude Include="iNetworkReceive.h" />
     <ClInclude Include="IOauth2.h" />
+    <ClInclude Include="iRESTApi.h" />
     <ClInclude Include="iRun.h" />
     <ClInclude Include="IRuntimeMessageProcessing.h" />
     <ClInclude Include="ISonosCMDs.h" />
     <ClInclude Include="ISonosConnection.h" />
+    <ClInclude Include="JSONManager.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightState.h" />
     <ClInclude Include="HueManager.h" />
@@ -206,7 +211,10 @@
     <ClInclude Include="ReadMessageInterface.h" />
     <ClInclude Include="RemoteManager.h" />
     <ClInclude Include="RemoteTelldus.h" />
+    <ClInclude Include="RESTApi.h" />
     <ClInclude Include="Runner.h" />
+    <ClInclude Include="Sensor.h" />
+    <ClInclude Include="SensorManager.h" />
     <ClInclude Include="seriealizeFunctions.h" />
     <ClInclude Include="SonosClient.h" />
     <ClInclude Include="SonosConnection.h" />
@@ -224,8 +232,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Configuration.cpp" />
+    <ClCompile Include="HTTPServer.cpp" />
     <ClCompile Include="HueClient.cpp" />
     <ClCompile Include="HueManager.cpp" />
+    <ClCompile Include="JSONManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MappingManager.cpp" />
     <ClCompile Include="Message.cpp" />
@@ -237,6 +247,8 @@
     <ClCompile Include="ProgramManager.cpp" />
     <ClCompile Include="RemoteManager.cpp" />
     <ClCompile Include="RemoteTelldus.cpp" />
+    <ClCompile Include="RESTApi.cpp" />
+    <ClCompile Include="SensorManager.cpp" />
     <ClCompile Include="serializeFunctions.cpp" />
     <ClCompile Include="SonosClient.cpp" />
     <ClCompile Include="SonosConnection.cpp" />

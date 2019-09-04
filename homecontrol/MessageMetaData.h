@@ -13,6 +13,7 @@ enum class Id {
 	SoundPlay,
 	SoundPause,
 	Subscribe = 21,
+	Sensor = 22,
 };
 
 enum class Cmd {

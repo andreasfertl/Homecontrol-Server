@@ -17,10 +17,13 @@ ProgramManager::ProgramManager(IPrint& iPrint) :
 	m_TelldusManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription),
 	m_HueManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription),
 	m_MappingManager(iPrint, m_ThreadManager, m_Subscription),
+	m_SensorManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription),
 	m_NetworkMessageHandler(iPrint, m_ThreadManager, m_Subscription),
 	m_NetworkReceiveHandler(iPrint),
 	m_TCPHandler(30000, m_NetworkMessageHandler),
-	m_TCPHandler2(30001, m_NetworkReceiveHandler)
+	m_JSONManager(m_ThreadManager),
+	m_RESTApi(m_JSONManager),
+	m_HTTPServer(iPrint, L"http://localhost:40000/v1/", m_RESTApi)
 	//m_SonosManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription)
 {
 }

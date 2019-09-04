@@ -165,7 +165,8 @@ public:
 		m_ConfigurationSonos(ReadSonosConfiguration(GetConfigSection(L"Sonos", m_ConfigFileContent))),
 		m_ConfigurationPhilipsHue(ReadPhilipsHueConfiguration(GetConfigSection(L"PhilipsHue", m_ConfigFileContent))),
 		m_ConfigurationTelldus(ReadTelldusConfiguration(GetConfigSection(L"Telldus", m_ConfigFileContent))),
-		m_ConfigurationRemoteManager(ReadRemoteManagerConfiguration(GetConfigSection(L"RemoteManager", m_ConfigFileContent)))
+		m_ConfigurationRemoteManager(ReadRemoteManagerConfiguration(GetConfigSection(L"RemoteManager", m_ConfigFileContent))),
+		m_ConfigurationSensorManager()
 	{
 	}
 	
@@ -189,6 +190,10 @@ public:
 		return m_ConfigurationRemoteManager;
 	}
 
+	const ConfigurationSensorManager& GetConfigurationSensorManager() override {
+		return m_ConfigurationSensorManager;
+	}
+
 private:
 	struct IPrint& m_IPrint;
 	std::wstring m_ConfigFileContent;
@@ -196,6 +201,7 @@ private:
 	const ConfigurationPhilipsHue m_ConfigurationPhilipsHue;
 	const ConfigurationTelldus m_ConfigurationTelldus;
 	const ConfigurationRemoteManager m_ConfigurationRemoteManager;
+	const ConfigurationSensorManager m_ConfigurationSensorManager;
 };
 
 

@@ -13,6 +13,10 @@
 #include "TCPHandler.h"
 #include "networkReceiveHandler.h"
 #include "networkMessageHandler.h"
+#include "JSONManager.h"
+#include "HTTPServer.h"
+#include "RESTApi.h"
+#include "SensorManager.h"
 
 class ProgramManager
 {
@@ -32,10 +36,13 @@ private:
 	TelldusManager          m_TelldusManager;
 	HueManager		        m_HueManager;
 	MappingManager          m_MappingManager;
+	SensorManager           m_SensorManager;
 	netWorkReceiveHandler   m_NetworkReceiveHandler;
 	networkMessageHandler   m_NetworkMessageHandler;
 	TCPHandler				m_TCPHandler;
-	TCPHandler				m_TCPHandler2;
+	JSONManager             m_JSONManager;
+	RESTApi                 m_RESTApi;
+	HTTPServer				m_HTTPServer;
 	//SonosManager            m_SonosManager;
 };
 
