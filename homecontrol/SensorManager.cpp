@@ -36,7 +36,7 @@ void SensorManager::HandleMessage(const Message& msg)
 		}
 	}
 	else if (msg.GetId() == Id::Sensor) {
-		if (cmd == Cmd::ReadWithAnswer) {
+		if (cmd == Cmd::ReadWithDirectAnswer) {
 			if (auto sensorToRead = msg.GetValue<Sensor>(&m_IPrint))
 			{
 				msg.Answer(Message(Cmd::Answer, Id::Sensor, GetSensor(sensorToRead->m_Id)));

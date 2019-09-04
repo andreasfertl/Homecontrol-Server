@@ -56,23 +56,30 @@ void JSONManager::HandleMessage(const Message& msg)
 web::json::value JSONManager::getSensor(int id) const
 {
 	//setting up lambda & reading of value
-	web::json::value sensorJson;
-	std::promise<void> promise;
-	std::future<void> sensorValueFuture;
-
-	std::function<void(Message)> answerCallback = [&sensorJson, &sensorValueFuture](Message answMessage) {
-		if (auto sensor = answMessage.GetValue<Sensor>())
-		{
+	std::promise<web::json::value> sensorValue;
+	std::future<web::json::value> sensorValueFuture = sensorValue.get_future();
+	
+	std::function<void(Message)> answerCallback = [&sensorValue](Message answMessage) {
+		if (auto sensor = answMessage.GetValue<Sensor>()) {
+			web::json::value sensorJson;
 			JSONHandlerN::setInteger(sensorJson[U("sensor")], U("id"), sensor->m_Id);
 			JSONHandlerN::setDouble(sensorJson[U("sensor")], U("temperature"), sensor->m_Temperature);
 			JSONHandlerN::setInteger(sensorJson[U("sensor")], U("humidity"), sensor->m_Humididty);
+
+			sensorValue.set_value(sensorJson);
 		}
+		else {
+			sensorValue.set_value({});
+		}
+
+
 	};
+
 	//sending message
-	m_RuntimeMessageHandler.SendMessage(Message(Cmd::ReadWithAnswer, Id::Sensor, Sensor(id), answerCallback));
+	m_RuntimeMessageHandler.SendMessage(Message(Cmd::ReadWithDirectAnswer, Id::Sensor, Sensor(id), answerCallback));
 
 	//waiting for answer
 	sensorValueFuture.wait();
-	return sensorJson;
+	return sensorValueFuture.get();
 }
 
