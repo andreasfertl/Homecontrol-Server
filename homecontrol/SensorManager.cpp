@@ -37,11 +37,16 @@ void SensorManager::HandleMessage(const Message& msg)
 	}
 	else if (msg.GetId() == Id::Sensor) {
 		if (cmd == Cmd::ReadWithDirectAnswer) {
-			if (auto sensorToRead = msg.GetValue<Sensor>(&m_IPrint))
-			{
+			if (auto sensorToRead = msg.GetValue<Sensor>(&m_IPrint)) {
 				msg.Answer(Message(Cmd::Answer, Id::Sensor, GetSensor(sensorToRead->m_Id)));
 			}
 		}
+		else if (cmd == Cmd::Read) {
+			if (auto sensorToRead = msg.GetValue<Sensor>(&m_IPrint)) {
+				m_RuntimeMessageHandler.SendMessage(Message(Cmd::Answer, Id::Sensor, GetSensor(sensorToRead->m_Id)));
+			}
+		}
+
 	}
 }
 
