@@ -61,8 +61,15 @@ web::json::value JSONManager::getSensor(int id) const
 
 	web::json::value sensorJson;
 	JSONHandlerN::setInteger(sensorJson[U("sensor")], U("id"), sensor.m_Id);
-	JSONHandlerN::setDouble(sensorJson[U("sensor")], U("temperature"), sensor.m_Temperature);
+
+	double d = sensor.m_Temperature;
+	std::wostringstream stream;
+	stream.precision(4);
+	stream << d;
+
+	JSONHandlerN::setString(sensorJson[U("sensor")], U("temperature"), stream.str());
 	JSONHandlerN::setInteger(sensorJson[U("sensor")], U("humidity"), sensor.m_Humididty);
+	JSONHandlerN::setString(sensorJson[U("sensor")], U("name"), sensor.m_Name);
 
 	return sensorJson;
 

@@ -31,7 +31,12 @@ void SensorManager::HandleMessage(const Message& msg)
 		if (cmd == Cmd::Write) {
 			if (auto sensor = msg.GetValue<MandolynSensor>(&m_IPrint)) {
 				auto id = sensor->GetId();
-				m_Sensors[id] = Sensor(id, sensor->GetTemp(), sensor->GetHumidity());
+				if (id == 12)
+					m_Sensors[id] = Sensor(id, sensor->GetTemp(), sensor->GetHumidity(), L"office");
+				else if (id == 11)
+					m_Sensors[id] = Sensor(id, sensor->GetTemp(), sensor->GetHumidity(), L"living room");
+				else
+					m_Sensors[id] = Sensor(id, sensor->GetTemp(), sensor->GetHumidity(), L"outside");
 			}
 		}
 	}
