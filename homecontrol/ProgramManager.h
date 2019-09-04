@@ -37,12 +37,12 @@ private:
 	HueManager		        m_HueManager;
 	MappingManager          m_MappingManager;
 	SensorManager           m_SensorManager;
-	netWorkReceiveHandler   m_NetworkReceiveHandler;
-	networkMessageHandler   m_NetworkMessageHandler;
-	TCPHandler				m_TCPHandler;
 	JSONManager             m_JSONManager;
 	RESTApi                 m_RESTApi;
 	HTTPServer				m_HTTPServer;
+	netWorkReceiveHandler   m_NetworkReceiveHandler;
+	networkMessageHandler   m_NetworkMessageHandler;
+	TCPHandler				m_TCPHandler;
 	//SonosManager            m_SonosManager;
 };
 

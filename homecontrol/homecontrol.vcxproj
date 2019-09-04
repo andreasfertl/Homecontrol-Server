@@ -201,6 +201,7 @@
     <ClInclude Include="Message.h" />
     <ClInclude Include="MessageLightState.h" />
     <ClInclude Include="MessageMetaData.h" />
+    <ClInclude Include="MessageWithDirectAnswer.h" />
     <ClInclude Include="networkMessageHandler.h" />
     <ClInclude Include="networkReceiveHandler.h" />
     <ClInclude Include="OAuth2.h" />

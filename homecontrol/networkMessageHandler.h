@@ -5,7 +5,7 @@
 class networkMessageHandler : public iNetworkReceive, public IRuntime
 {
 public:
-	networkMessageHandler(struct IPrint& iPrint, struct IRuntimeRegister& iRuntimeRegister, struct ISubscribe& iSubscribe);
+	networkMessageHandler(struct IPrint& iPrint, struct IRuntimeRegister& iRuntimeRegister, struct ISubscribe& iSubscribe, struct IJSONManager& iJSONManager);
 
 	//iNetworkReceive
 	void receive(const networkMessage& nwMessage) const override;
@@ -16,10 +16,8 @@ public:
 
 private:
 	struct IPrint& m_IPrint;
+	struct IJSONManager& m_IJSONManager;
 	struct IRuntimeMessageHandling& m_RuntimeMessageHandler;
-
-	double m_TempSensor11Cache;
-	double m_TempSensor12Cache;
 };
 
 

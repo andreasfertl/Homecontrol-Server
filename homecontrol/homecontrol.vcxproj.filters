@@ -216,6 +216,9 @@
     <ClInclude Include="IGetSensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MessageWithDirectAnswer.h">
+      <Filter>Header Files\Messages</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Message.cpp">

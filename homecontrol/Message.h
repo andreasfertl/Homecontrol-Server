@@ -52,3 +52,4 @@ private:
 	std::any    m_Value;
 	std::function<void(Message)> m_Answer; //if the message requires an active answer we can user this
 };
+
