@@ -12,6 +12,7 @@ SensorManager::SensorManager(IPrint& iPrint, IConfigurationSensorManager& iGetCo
 	m_Sensors()
 {
 	iSubscribe.Subscribe({ Id::MandolynSensor, m_RuntimeMessageHandler });
+	iSubscribe.Subscribe({ Id::Sensor, m_RuntimeMessageHandler });
 }
 
 SensorManager::~SensorManager()
@@ -35,10 +36,10 @@ void SensorManager::HandleMessage(const Message& msg)
 		}
 	}
 	else if (msg.GetId() == Id::Sensor) {
-		if (cmd == Cmd::Read) {
+		if (cmd == Cmd::ReadWithAnswer) {
 			if (auto sensorToRead = msg.GetValue<Sensor>(&m_IPrint))
 			{
-				m_RuntimeMessageHandler.SendMessage(Message(Cmd::Answer, Id::Sensor, GetSensor(sensorToRead->m_Id)));
+				msg.Answer(Message(Cmd::Answer, Id::Sensor, GetSensor(sensorToRead->m_Id)));
 			}
 		}
 	}

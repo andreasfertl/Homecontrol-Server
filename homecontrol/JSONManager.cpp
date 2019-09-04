@@ -3,8 +3,10 @@
 #include "IRuntimeConfigure.h"
 #include "RuntimeId.h"
 #include "StringTools.h"
+#include "Sensor.h"
 #include <cpprest/json.h>
 #include <chrono>
+#include <future>
 
 namespace JSONHandlerN {
 	void setOptionalString(web::json::value& json, const utility::string_t& value, const std::optional<std::wstring>& data) {
@@ -51,9 +53,26 @@ void JSONManager::HandleMessage(const Message& msg)
 {
 }
 
-void JSONManager::getSensor(int id) const
+web::json::value JSONManager::getSensor(int id) const
 {
+	//setting up lambda & reading of value
+	web::json::value sensorJson;
+	std::promise<void> promise;
+	std::future<void> sensorValueFuture;
 
-	//m_RuntimeMessageHandler.SendMessage();
+	std::function<void(Message)> answerCallback = [&sensorJson, &sensorValueFuture](Message answMessage) {
+		if (auto sensor = answMessage.GetValue<Sensor>())
+		{
+			JSONHandlerN::setInteger(sensorJson[U("sensor")], U("id"), sensor->m_Id);
+			JSONHandlerN::setDouble(sensorJson[U("sensor")], U("temperature"), sensor->m_Temperature);
+			JSONHandlerN::setInteger(sensorJson[U("sensor")], U("humidity"), sensor->m_Humididty);
+		}
+	};
+	//sending message
+	m_RuntimeMessageHandler.SendMessage(Message(Cmd::ReadWithAnswer, Id::Sensor, Sensor(id), answerCallback));
+
+	//waiting for answer
+	sensorValueFuture.wait();
+	return sensorJson;
 }
 

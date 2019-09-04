@@ -22,4 +22,5 @@ enum class Cmd {
 	Answer = 2,
 	Any = 3,
 	Run = 6,
+	ReadWithAnswer = 7,
 };

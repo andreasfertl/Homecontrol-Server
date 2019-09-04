@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
+#include <cpprest/json.h>
 
 struct IJSONManager {
-	virtual void getSensor(int id) const = 0;
+	virtual web::json::value getSensor(int id) const = 0;
 };

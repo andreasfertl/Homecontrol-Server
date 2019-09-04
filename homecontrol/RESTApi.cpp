@@ -25,7 +25,7 @@ namespace {
 
 		addCommand(commandList, U("sensor"), U("all"), [&iJSONManager](const utility::string_t& value) { return web::json::value(L"all"); });
 		addCommand(commandList, U("sensor"), U("*"), [&iJSONManager](const utility::string_t& value) { 
-			iJSONManager.getSensor(11); return web::json::value(value);
+			return iJSONManager.getSensor(stoi(value)); 
 		});
 
 		return commandList;

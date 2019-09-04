@@ -18,7 +18,7 @@ public:
 	void HandleMessage(const Message& msg) override;
 
 	//IJSONManager
-	void getSensor(int id) const override;
+	web::json::value getSensor(int id) const override;
 
 private:
 	struct IRuntimeMessageHandling& m_RuntimeMessageHandler;

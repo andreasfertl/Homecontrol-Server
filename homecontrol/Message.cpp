@@ -77,7 +77,8 @@ namespace {
 Message::Message(const std::string& fromJson) :
 	m_Cmd(),
 	m_Id(),
-	m_Value()
+	m_Value(),
+	m_Answer()
 {
 	auto json = utility::conversions::to_string_t(fromJson);
 	auto[cmd, id, value] = Init(json);
@@ -86,17 +87,25 @@ Message::Message(const std::string& fromJson) :
 	m_Value = value;
 }
 
+Message::Message(Cmd cmd, Id id, std::any value, std::function<void(Message)> answer) :
+	m_Cmd(cmd),
+	m_Id(id),
+	m_Value(value),
+	m_Answer(answer) {
+}
+
 Message::Message(Cmd cmd, Id id, std::any value) :
 	m_Cmd(cmd),
 	m_Id(id),
-	m_Value(value)
-{
+	m_Value(value),
+	m_Answer() {
 }
 
 Message::Message(Cmd cmd, Id id) :
 	m_Cmd(cmd),
 	m_Id(id),
-	m_Value() {
+	m_Value(),
+	m_Answer() {
 }
 
 Message::~Message() {
