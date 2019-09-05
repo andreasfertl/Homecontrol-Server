@@ -152,6 +152,40 @@ namespace {
 		return ConfigurationRemoteManager(std::vector<unsigned int>()); //proceeding with a "empty" configuration
 	}
 
+	std::vector<TempHumidity> ReadConfiguredTempHumiditySensors(std::optional<web::json::value>& config) {
+
+		std::vector<TempHumidity> configuredSensors;
+
+		if (config->is_null())
+			return configuredSensors;
+
+		auto& sensors = (*config)[U("TempHumidity")];
+		if (sensors.is_array())
+		{
+			auto sensorsArray = sensors.as_array();
+			for (auto sensor : sensorsArray)
+			{
+				configuredSensors.emplace_back(sensor[U("InternalId")].as_integer(), sensor[U("id")].as_integer(), sensor[U("name")].as_string());
+			}
+		}
+
+		return configuredSensors;
+	}
+
+
+	ConfigurationSensorManager ReadSensorManagerConfigurationConfiguration(std::optional<web::json::value> configuration) {
+
+		try {
+			return ConfigurationSensorManager(ReadConfiguredTempHumiditySensors(configuration));
+		}
+		catch (...) {
+		}
+
+		//error....
+		return ConfigurationSensorManager(std::vector<TempHumidity>()); //proceeding with a "empty" configuration
+	}
+
+
 
 
 }
@@ -166,7 +200,7 @@ public:
 		m_ConfigurationPhilipsHue(ReadPhilipsHueConfiguration(GetConfigSection(L"PhilipsHue", m_ConfigFileContent))),
 		m_ConfigurationTelldus(ReadTelldusConfiguration(GetConfigSection(L"Telldus", m_ConfigFileContent))),
 		m_ConfigurationRemoteManager(ReadRemoteManagerConfiguration(GetConfigSection(L"RemoteManager", m_ConfigFileContent))),
-		m_ConfigurationSensorManager()
+		m_ConfigurationSensorManager(ReadSensorManagerConfigurationConfiguration(GetConfigSection(L"Sensors", m_ConfigFileContent)))
 	{
 	}
 	

@@ -3,5 +3,5 @@
 #include <cpprest/json.h>
 
 struct IJSONManager {
-	virtual web::json::value getSensor(int id) const = 0;
+	virtual web::json::value getSensor(unsigned int internalId) const = 0;
 };

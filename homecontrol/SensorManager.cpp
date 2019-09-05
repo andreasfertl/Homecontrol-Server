@@ -13,6 +13,11 @@ SensorManager::SensorManager(IPrint& iPrint, IConfigurationSensorManager& iGetCo
 {
 	iSubscribe.Subscribe({ Id::MandolynSensor, m_RuntimeMessageHandler });
 	iSubscribe.Subscribe({ Id::Sensor, m_RuntimeMessageHandler });
+
+	for (auto& sensors : iGetConfiguration.GetConfigurationSensorManager().m_TempHumiditySensors) {
+		
+		m_Sensors[sensors.m_InternalId] = Sensor(sensors.m_InternalId, sensors.m_Id, 0, 0, sensors.m_Name);
+	}
 }
 
 SensorManager::~SensorManager()
@@ -30,13 +35,9 @@ void SensorManager::HandleMessage(const Message& msg)
 	{
 		if (cmd == Cmd::Write) {
 			if (auto sensor = msg.GetValue<MandolynSensor>(&m_IPrint)) {
+				//find by id!!!! TBD
 				auto id = sensor->GetId();
-				if (id == 12)
-					m_Sensors[id] = Sensor(id, sensor->GetTemp(), sensor->GetHumidity(), L"office");
-				else if (id == 11)
-					m_Sensors[id] = Sensor(id, sensor->GetTemp(), sensor->GetHumidity(), L"living room");
-				else
-					m_Sensors[id] = Sensor(id, sensor->GetTemp(), sensor->GetHumidity(), L"outside");
+				m_Sensors[id] = Sensor(id, 0, sensor->GetTemp(), sensor->GetHumidity(), L"office");
 			}
 		}
 	}

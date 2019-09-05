@@ -55,9 +55,9 @@ void JSONManager::HandleMessage(const Message& msg)
 }
 
 
-web::json::value JSONManager::getSensor(int id) const
+web::json::value JSONManager::getSensor(unsigned int internalId) const
 {
-	auto sensor = MassageWithDirectAnswer::SendAndRead<Sensor>(m_RuntimeMessageHandler, Id::Sensor, Sensor(id));
+	auto sensor = MassageWithDirectAnswer::SendAndRead<Sensor>(m_RuntimeMessageHandler, Id::Sensor, Sensor(internalId));
 
 	web::json::value sensorJson;
 	JSONHandlerN::setInteger(sensorJson[U("sensor")], U("id"), sensor.m_Id);

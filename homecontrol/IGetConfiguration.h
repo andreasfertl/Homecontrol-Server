@@ -76,8 +76,28 @@ public:
 	const std::vector<unsigned int> m_IdsToSubscribe;
 };
 
+struct TempHumidity {
+public:
+	TempHumidity(unsigned int internalId, unsigned int id, const std::wstring& name) :
+		m_InternalId(internalId),
+		m_Id(id),
+		m_Name(name)
+	{
+	}
+
+	const unsigned int m_InternalId;
+	const int m_Id;
+	const std::wstring m_Name;
+};
+
 struct ConfigurationSensorManager {
-	const std::vector<int> m_SensorIds;
+public:
+	ConfigurationSensorManager(const std::vector<TempHumidity>& sensors) :
+		m_TempHumiditySensors(sensors)
+	{
+	}
+
+	const std::vector<TempHumidity> m_TempHumiditySensors;
 };
 
 struct IConfigurationSonos {
