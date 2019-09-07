@@ -15,17 +15,17 @@ namespace {
 
 	void SendAutomaticLights(IRuntimeMessageHandling& iSender, bool on)
 	{
-		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1004, on)));
-		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1005, on)));
-		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1006, on)));
-		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1007, on)));
-		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1009, on)));
+		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1004, on, L"")));
+		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1005, on, L"")));
+		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1006, on, L"")));
+		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1007, on, L"")));
+		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1009, on, L"")));
 
-		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1012, on)));
-		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1013, on)));
-		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1014, on)));
-		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1015, on)));
-		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1016, on)));
+		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1012, on, L"")));
+		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1013, on, L"")));
+		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1014, on, L"")));
+		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1015, on, L"")));
+		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1016, on, L"")));
 	}
 }
 
@@ -108,7 +108,7 @@ void MappingManager::HandleMessage(const Message & msg)
 					if (group != 0) //than it its group
 						;
 					else //single click
-						m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1010, on)));
+						m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1010, on, L"")));
 					break;
 				case 2:
 					if (on)
@@ -117,7 +117,7 @@ void MappingManager::HandleMessage(const Message & msg)
 						m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::SoundPause));
 					break;
 				case 3:
-					m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1001, on)));
+					m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1001, on, L"")));
 					break;
 				}
 			}
@@ -127,17 +127,17 @@ void MappingManager::HandleMessage(const Message & msg)
 			}
 			else if (housecode == 15617150)
 			{
-				m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1001, on)));
+				m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1001, on, L"")));
 			}
 			else if (housecode == 17756142)
 			{
 				switch (unit)
 				{
 				case 11:
-					m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1011, on)));
+					m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1011, on, L"")));
 					break;
 				case 12:
-					m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1001, on)));
+					m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1001, on, L"")));
 					break;
 				}
 			}

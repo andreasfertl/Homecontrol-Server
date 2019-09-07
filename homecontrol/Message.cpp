@@ -66,7 +66,7 @@ namespace {
 			//id to subscribe to
 			auto id = data[U("ID")].as_integer();
 			auto onOff = data[U("LightState")].as_integer() ? true : false;
-			value = MessageLightState(id, onOff);
+			value = MessageLightState(id, onOff, L"");
 		}
 
 		return std::make_tuple(cmd, id, value);

@@ -58,8 +58,8 @@ void SensorManager::HandleMessage(const Message& msg)
 	}
 }
 
-Sensor SensorManager::GetSensor(int id) {
-	auto it = m_Sensors.find(id);
+Sensor SensorManager::GetSensor(int internalId) {
+	auto it = m_Sensors.find(internalId);
 	if (it != std::end(m_Sensors))
 		return it->second;
 	else

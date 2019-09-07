@@ -2,5 +2,5 @@
 #include "Sensor.h"
 
 struct IGetSensor {
-	virtual Sensor GetSensor(int id) = 0;
+	virtual Sensor GetSensor(int internalId) = 0;
 };

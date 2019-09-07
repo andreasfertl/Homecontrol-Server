@@ -24,9 +24,10 @@ namespace {
 		std::map<utility::string_t, std::list<RESTAPI::command>> commandList;
 
 		addCommand(commandList, U("sensor"), U("all"), [&iJSONManager](const utility::string_t& value) { return web::json::value(L"should deliver back all sensors..."); });
-		addCommand(commandList, U("sensor"), U("*"), [&iJSONManager](const utility::string_t& value) { 
-			return iJSONManager.getSensor(stoi(value)); 
-		});
+		addCommand(commandList, U("sensor"), U("*"), [&iJSONManager](const utility::string_t& value) { 	return iJSONManager.getSensor(stoi(value)); });
+		addCommand(commandList, U("light"), U("*"), [&iJSONManager](const utility::string_t& value) { return iJSONManager.getLightState(stoi(value)); });
+		addCommand(commandList, U("setLightOn"), U("*"), [&iJSONManager](const utility::string_t& value) { return iJSONManager.setLightState(stoi(value), true); });
+		addCommand(commandList, U("setLightOff"), U("*"), [&iJSONManager](const utility::string_t& value) { return iJSONManager.setLightState(stoi(value), false); });
 
 		return commandList;
 	}

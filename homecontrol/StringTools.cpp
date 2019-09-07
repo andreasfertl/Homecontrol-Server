@@ -49,6 +49,23 @@ namespace StringTools
 		return std::string(str.begin(), str.end()); //generates warning in vs 2019
 	}
 
+	std::wstring FormatWithXDigits(double value, unsigned int digits)
+	{
+		std::wostringstream stream;
+		stream.precision(digits);
+		stream << value;
+		return stream.str();
+	}
+
+	std::wstring FormatWithXDigits(float value, unsigned int digits)
+	{
+		std::wostringstream stream;
+		stream.precision(digits);
+		stream << value;
+		return stream.str();
+	}
+
+
     //converts just a string hexvalue into a real hex
     unsigned int GetHexValueFromString(const std::string &s)
     {

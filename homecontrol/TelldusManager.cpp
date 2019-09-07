@@ -64,7 +64,14 @@ void TelldusManager::HandleMessage(const Message & msg)
 			{
 				for (auto& lamp : m_Lights) {
 					if (lightstate->m_Id == lamp.GetId())
-						m_RuntimeMessageHandler.SendMessage(Message(Cmd::Answer, Id::LightState, lamp.GetState()));
+						m_RuntimeMessageHandler.SendMessage(Message(Cmd::Answer, Id::LightState, MessageLightState(lamp.GetId(), lamp.GetState() == LightState::On ? true : false, L"")));
+				};
+			}
+			else if (cmd == Cmd::ReadWithDirectAnswer) {
+				for (auto& lamp : m_Lights) {
+					if (lightstate->m_Id == lamp.GetId()) {
+						msg.Answer(Message(Cmd::Answer, Id::LightState, MessageLightState(lamp.GetId(), lamp.GetState() == LightState::On ? true : false, L"")));
+					}
 				};
 			}
 		}

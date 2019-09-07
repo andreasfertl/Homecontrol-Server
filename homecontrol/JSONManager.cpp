@@ -5,6 +5,7 @@
 #include "StringTools.h"
 #include "Sensor.h"
 #include "MessageWithDirectAnswer.h"
+#include "MessageLightState.h"
 #include <cpprest/json.h>
 #include <chrono>
 #include <future>
@@ -32,6 +33,10 @@ namespace JSONHandlerN {
 		json[value] = web::json::value::number(data);
 	}
 
+	void setBool(web::json::value& json, const utility::string_t& value, bool data) {
+		json[value] = web::json::value::boolean(data);
+	}
+
 	void setString(web::json::value& json, const utility::string_t& value, const std::wstring& data) {
 		json[value] = web::json::value::string(data);
 	}
@@ -46,32 +51,41 @@ JSONManager::JSONManager(struct IRuntimeRegister& iRuntimeRegister) :
 JSONManager::~JSONManager() {
 }
 
-void JSONManager::Callback()
-{
+void JSONManager::Callback() {
 }
 
-void JSONManager::HandleMessage(const Message& msg)
-{
+void JSONManager::HandleMessage(const Message& msg) {
 }
 
 
-web::json::value JSONManager::getSensor(unsigned int internalId) const
-{
+web::json::value JSONManager::getSensor(unsigned int internalId) const {
 	auto sensor = MassageWithDirectAnswer::SendAndRead<Sensor>(m_RuntimeMessageHandler, Id::Sensor, Sensor(internalId));
 
-	web::json::value sensorJson;
-	JSONHandlerN::setInteger(sensorJson[U("sensor")], U("id"), sensor.m_Id);
+	web::json::value json;
+	JSONHandlerN::setInteger(json[U("sensor")], U("id"), sensor.m_Id);
+	JSONHandlerN::setString(json[U("sensor")], U("temperature"), StringTools::FormatWithXDigits(sensor.m_Temperature, 4));
+	JSONHandlerN::setInteger(json[U("sensor")], U("humidity"), sensor.m_Humididty);
+	JSONHandlerN::setString(json[U("sensor")], U("name"), sensor.m_Name);
 
-	double d = sensor.m_Temperature;
-	std::wostringstream stream;
-	stream.precision(4);
-	stream << d;
+	return json;
+}
 
-	JSONHandlerN::setString(sensorJson[U("sensor")], U("temperature"), stream.str());
-	JSONHandlerN::setInteger(sensorJson[U("sensor")], U("humidity"), sensor.m_Humididty);
-	JSONHandlerN::setString(sensorJson[U("sensor")], U("name"), sensor.m_Name);
+web::json::value JSONManager::getLightState(unsigned int internalId) const {
+	auto lightstate = MassageWithDirectAnswer::SendAndRead<MessageLightState>(m_RuntimeMessageHandler, Id::LightState, MessageLightState(internalId, false, L""));
 
-	return sensorJson;
+	web::json::value json;
+	JSONHandlerN::setInteger(json[U("lightstate")], U("id"), lightstate.m_Id);
+	JSONHandlerN::setBool(json[U("lightstate")], U("on"), lightstate.m_On);
+	JSONHandlerN::setString(json[U("lightstate")], U("name"), lightstate.m_Name);
+
+	return json;
 
 }
+
+web::json::value JSONManager::setLightState(unsigned int internalId, bool state) const
+{
+	m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(internalId, state, L"")));
+	return getLightState(internalId);
+}
+
 

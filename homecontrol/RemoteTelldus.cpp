@@ -17,7 +17,7 @@ LightState RemoteTelldus::ReadLightState(unsigned int lamp)
 
 bool RemoteTelldus::SetLightState(unsigned int lamp, LightState state)
 {
-	m_IRuntimeMessageHandling.SendMessage(Message(Cmd::Write, Id::TelldusDeviceSetState, MessageLightState(lamp, state == LightState::On ? true : false)));
+	m_IRuntimeMessageHandling.SendMessage(Message(Cmd::Write, Id::TelldusDeviceSetState, MessageLightState(lamp, state == LightState::On ? true : false, L"")));
 	return true;
 }
 

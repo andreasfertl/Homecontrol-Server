@@ -19,7 +19,7 @@ public:
 	void HandleMessage(const Message& msg) override;
 
 	//IGetSensor 
-	Sensor GetSensor(int id) override ;
+	Sensor GetSensor(int internalId) override ;
 
 private:
 	struct IPrint& m_IPrint;

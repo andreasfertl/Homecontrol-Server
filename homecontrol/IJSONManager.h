@@ -4,4 +4,6 @@
 
 struct IJSONManager {
 	virtual web::json::value getSensor(unsigned int internalId) const = 0;
+	virtual web::json::value getLightState(unsigned int internalId) const = 0;
+	virtual web::json::value setLightState(unsigned int internalId, bool state) const = 0;
 };

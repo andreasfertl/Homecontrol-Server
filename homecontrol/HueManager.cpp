@@ -79,8 +79,14 @@ void HueManager::HandleMessage(const Message & msg)
 			{
 				auto lamp = GetLamp(lightstate->m_Id);
 				if (lamp != m_Lights.end())
-					m_RuntimeMessageHandler.SendMessage(Message(Cmd::Answer, Id::LightState, MessageLightState(lamp->GetId(), lamp->GetState() == LightState::On ? true : false)));
+					m_RuntimeMessageHandler.SendMessage(Message(Cmd::Answer, Id::LightState, MessageLightState(lamp->GetId(), lamp->GetState() == LightState::On ? true : false, lamp->GetName())));
 			}
+			else if (cmd == Cmd::ReadWithDirectAnswer) {
+				auto lamp = GetLamp(lightstate->m_Id);
+				if (lamp != m_Lights.end())
+					msg.Answer(Message(Cmd::Answer, Id::LightState, MessageLightState(lamp->GetId(), lamp->GetState() == LightState::On ? true : false, lamp->GetName())));
+			}
+
 		}
 	}
 }

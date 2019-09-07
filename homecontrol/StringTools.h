@@ -17,6 +17,9 @@ namespace StringTools
 	std::wstring AsWstring(const std::string& str);
 	std::string AsString(const std::wstring& str);
 
+	std::wstring FormatWithXDigits(double value, unsigned int digits);
+	std::wstring FormatWithXDigits(float value, unsigned int digits);
+
     template<typename T>
     T StringToNumber(const std::string& numberAsString)
     {
