@@ -14,6 +14,8 @@ enum class Id {
 	SoundPause,
 	Subscribe = 21,
 	Sensor = 22,
+	Sensors = 23,
+	Lights = 24,
 };
 
 enum class Cmd {

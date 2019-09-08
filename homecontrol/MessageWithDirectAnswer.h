@@ -3,17 +3,14 @@
 #include <future>
 
 namespace MassageWithDirectAnswer { 
-	template<typename T, typename U>
-	T SendAndRead(IRuntimeMessageHandling& iRuntime, Id id, U data) {
+	template<typename T>
+	T SendAndRead(IRuntimeMessageHandling& iRuntime, Id id, T data) {
 		std::promise<T> value;
 		std::future<T> valueFuture = value.get_future();
 		
 		std::function<void(Message)> answerCallback = [&value](Message answMessage) {
-			if (auto rxData = answMessage.GetValue<U>()) {
+			if (auto rxData = answMessage.GetValue<T>()) {
 				value.set_value(*rxData);
-			}
-			else {
-				value.set_value({});
 			}
 		};
 

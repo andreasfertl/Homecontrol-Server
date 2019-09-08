@@ -19,8 +19,10 @@ public:
 
 	//IJSONManager
 	web::json::value getSensor(unsigned int internalId) const override;
+	web::json::value getAllSensors() const override;
 	web::json::value getLightState(unsigned int internalId) const override;
 	web::json::value setLightState(unsigned int internalId, bool state) const override;
+	web::json::value getAllLights() const override;
 
 private:
 	struct IRuntimeMessageHandling& m_RuntimeMessageHandler;

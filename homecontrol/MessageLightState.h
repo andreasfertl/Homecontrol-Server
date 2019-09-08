@@ -4,7 +4,7 @@
 struct MessageLightState
 {
 public:
-	MessageLightState() : m_Id(), m_On() {};
+	MessageLightState() : m_Id(), m_On(), m_Name(){};
 	MessageLightState(unsigned int id, bool on, const std::wstring& name) : m_Id(id), m_On(on), m_Name(name) {};
 
 	unsigned int m_Id;

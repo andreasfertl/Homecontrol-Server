@@ -13,6 +13,7 @@ SensorManager::SensorManager(IPrint& iPrint, IConfigurationSensorManager& iGetCo
 {
 	iSubscribe.Subscribe({ Id::MandolynSensor, m_RuntimeMessageHandler });
 	iSubscribe.Subscribe({ Id::Sensor, m_RuntimeMessageHandler });
+	iSubscribe.Subscribe({ Id::Sensors, m_RuntimeMessageHandler });
 
 	for (auto& sensors : iGetConfiguration.GetConfigurationSensorManager().m_TempHumiditySensors) {
 		
@@ -54,7 +55,15 @@ void SensorManager::HandleMessage(const Message& msg)
 				m_RuntimeMessageHandler.SendMessage(Message(Cmd::Answer, Id::Sensor, GetSensor(sensorToRead->m_InternalId)));
 			}
 		}
-
+	}
+	else if (msg.GetId() == Id::Sensors) {
+		if (cmd == Cmd::ReadWithDirectAnswer) {
+			std::list<Sensor> sensors;
+			for (const auto& sensor : m_Sensors) {
+				sensors.push_back(sensor.second);
+			}
+			msg.Answer(Message(Cmd::Answer, Id::Sensor, sensors));
+		}
 	}
 }
 

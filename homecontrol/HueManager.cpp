@@ -33,6 +33,7 @@ HueManager::HueManager(IPrint& iPrint, struct IConfigurationPhilipsHue& iGetConf
 {
 	//configuration
 	iSubscribe.Subscribe({ Id::LightState, m_RuntimeMessageHandler });
+	iSubscribe.Subscribe({ Id::Lights, m_RuntimeMessageHandler });
 }
 
 HueManager::~HueManager()
@@ -64,13 +65,13 @@ void HueManager::SetLamp(unsigned int lampId, bool state)
 }
 
 
-void HueManager::HandleMessage(const Message & msg)
+void HueManager::HandleMessage(const Message& msg)
 {
+	const auto& cmd = msg.GetCmd();
 	if (msg.GetId() == Id::LightState)
 	{
 		if (auto lightstate = msg.GetValue<MessageLightState>(&m_IPrint))
 		{
-			const auto& cmd = msg.GetCmd();
 			if (cmd == Cmd::Write)
 			{
 				SetLamp(lightstate->m_Id, lightstate->m_On);
@@ -86,7 +87,16 @@ void HueManager::HandleMessage(const Message & msg)
 				if (lamp != m_Lights.end())
 					msg.Answer(Message(Cmd::Answer, Id::LightState, MessageLightState(lamp->GetId(), lamp->GetState() == LightState::On ? true : false, lamp->GetName())));
 			}
-
+		}
+	}
+	else if (msg.GetId() == Id::Lights)
+	{
+		if (cmd == Cmd::ReadWithDirectAnswer) {
+			std::list<MessageLightState> lights;
+			for (const auto& light : m_Lights) {
+				lights.emplace_back(light.GetId(), light.GetState() == LightState::On ? true : false, light.GetName());
+			}
+			msg.Answer(Message(Cmd::Answer, Id::Lights, lights));
 		}
 	}
 }
