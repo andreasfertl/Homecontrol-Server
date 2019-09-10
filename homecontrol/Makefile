@@ -30,8 +30,9 @@ LDFLAGS  += -lpthread -lcrypto -lssl -lcpprest -lstdc++ -g
 # Which Boost modules to use (all)
 BOOST_MODULES = \
   date_time     \
-  system        
-
+  system        \
+  coroutine
+  
 # Boost libraries' type (a suffix)
 BOOST_MODULES_TYPE := -mt
 

@@ -5,6 +5,8 @@
 #include "IGetConfiguration.h"
 #include "MandloynSensor.h"
 #include "Logging.h"
+#include <list>
+
 
 SensorManager::SensorManager(IPrint& iPrint, IConfigurationSensorManager& iGetConfiguration, IRuntimeRegister& iRuntimeRegister, ISubscribe& iSubscribe) :
 	m_IPrint(iPrint),

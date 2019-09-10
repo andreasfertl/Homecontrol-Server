@@ -35,7 +35,7 @@ LightState HueClient::ReadLightState(unsigned int lamp)
 	LightState lightState(LightState::Off);
 	http_client client(BuildUrl(U("lights"), m_Ip, m_Key, lamp));
 
-	auto request = client.request(methods::GET).then([](http_response response) -> pplx::task<json::value> {
+	client.request(methods::GET).then([](http_response response) -> pplx::task<json::value> {
 		if (response.status_code() == status_codes::OK)
 		{
 			return response.extract_json();
@@ -60,10 +60,10 @@ LightState HueClient::ReadLightState(unsigned int lamp)
 				auto stateArray = state.serialize();
 			}
 		}
-		catch (const http_exception& e)
+		catch (.../*const http_exception& e*/)
 		{
 			// Print error.
-			auto a = e.what();
+			//auto a = e.what();
 		}
 	}).wait();
 

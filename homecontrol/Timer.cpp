@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Timer.h"
 
 Timer::Timer(std::chrono::milliseconds time, const std::function<void()>& callback) :

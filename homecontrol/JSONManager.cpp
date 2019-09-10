@@ -9,16 +9,17 @@
 #include <cpprest/json.h>
 #include <chrono>
 #include <future>
+#include <list>
 
 namespace JSONHandlerN {
 	void setOptionalString(web::json::value& json, const utility::string_t& value, const std::optional<std::wstring>& data) {
 		if (data) {
-			json[value] = web::json::value::string(utility::conversions::to_string_t(*data));
+			json[value] = web::json::value::string(utility::conversions::to_string_t(StringTools::AsString((*data))));
 		}
 	}
 
 	void setUInt64(web::json::value& json, const utility::string_t& value, unsigned long long data) {
-		json[value] = web::json::value::number(data);
+		json[value] = web::json::value::number(static_cast<uint64_t>(data));
 	}
 
 	void setInteger(web::json::value& json, const utility::string_t& value, int data) {
@@ -38,22 +39,22 @@ namespace JSONHandlerN {
 	}
 
 	void setString(web::json::value& json, const utility::string_t& value, const std::wstring& data) {
-		json[value] = web::json::value::string(data);
+		json[value] = web::json::value::string(utility::conversions::to_string_t(StringTools::AsString(data)));
 	}
 
 	void setSensor(web::json::value& json, const Sensor& sensor) {
-		auto id = utility::conversions::to_string_t(std::to_wstring(sensor.m_Id));
+		auto id = utility::conversions::to_string_t(std::to_string(sensor.m_Id));
 		JSONHandlerN::setInteger(json[U("sensor")][id], U("id"), sensor.m_Id);
 		JSONHandlerN::setDouble(json[U("sensor")][id], U("temperature"), sensor.m_Temperature);
 		JSONHandlerN::setInteger(json[U("sensor")][id], U("humidity"), sensor.m_Humididty);
-		JSONHandlerN::setString(json[U("sensor")][id], U("name"), utility::conversions::to_string_t(sensor.m_Name));
+		JSONHandlerN::setString(json[U("sensor")][id], U("name"), sensor.m_Name);
 	}
 
 	void setLight(web::json::value& json, const MessageLightState& light) {
-		auto id = utility::conversions::to_string_t(std::to_wstring(light.m_Id));
+		auto id = utility::conversions::to_string_t(std::to_string(light.m_Id));
 		JSONHandlerN::setInteger(json[U("light")][id], U("id"), light.m_Id);
 		JSONHandlerN::setBool(json[U("light")][id], U("on"), light.m_On);
-		JSONHandlerN::setString(json[U("light")][id], U("name"), utility::conversions::to_string_t(light.m_Name));
+		JSONHandlerN::setString(json[U("light")][id], U("name"), light.m_Name);
 	}
 }
 

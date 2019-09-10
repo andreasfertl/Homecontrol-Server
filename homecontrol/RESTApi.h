@@ -1,4 +1,5 @@
 #pragma once
+#include <list>
 #include "iRESTApi.h"
 
 namespace RESTAPI {

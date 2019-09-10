@@ -15,7 +15,9 @@ namespace StringTools
     std::string GetStringByToken(const std::string& s, const std::string& token, const std::string& endmarker);
 	
 	std::wstring AsWstring(const std::string& str);
+	std::wstring AsWstring(const std::wstring& str);
 	std::string AsString(const std::wstring& str);
+	std::string AsString(const std::string& str);
 
 	std::wstring FormatWithXDigits(double value, unsigned int digits);
 	std::wstring FormatWithXDigits(float value, unsigned int digits);

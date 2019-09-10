@@ -13,12 +13,22 @@ SonosClient::SonosClient(struct IPrint& iPrint, struct ISonosConnection& iSonosC
 
 void SonosClient::Pause()
 {
-	m_ISonosConnection.SendPost(L"pause");
+	try {
+		m_ISonosConnection.SendPost(L"pause");
+	}
+	catch (...) {
+		Logg(m_IPrint, L"exception in SendPost - pause");
+	}
 }
 
 void SonosClient::Play()
 {
-	m_ISonosConnection.SendPost(L"play");
+	try {
+		m_ISonosConnection.SendPost(L"play");
+	}
+	catch (...) {
+		Logg(m_IPrint, L"exception in SendPost - pause");
+	}
 }
 
 

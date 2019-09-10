@@ -31,7 +31,7 @@ void networkMessageHandler::receive(const networkMessage& nwMessage) const
 	auto sensor = m_IJSONManager.getSensor(sensorId);
 
 	//send answer back
-	nwMessage.m_Answer(StringTools::AsString(sensor.serialize()));
+	nwMessage.m_Answer(utility::conversions::to_utf8string(sensor.serialize()));
 }
 
 void networkMessageHandler::Callback()

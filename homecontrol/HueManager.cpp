@@ -5,6 +5,7 @@
 #include "IRuntimeRegister.h"
 #include "MessageLightState.h"
 #include "Logging.h"
+#include <list>
 
 namespace {
 	void AddLight(IPrint& iPrint, std::vector<Light>& lights, ILightControl& ILightControl, unsigned int id, unsigned int lampId, const std::wstring& name)

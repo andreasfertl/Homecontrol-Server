@@ -1,10 +1,11 @@
 #ifdef _WIN32
 #define _WIN32_WINNT 0x0A00
-#define BOOST_COROUTINES_NO_DEPRECATION_WARNING
 #endif
+#define BOOST_COROUTINES_NO_DEPRECATION_WARNING
 
-#include "TCPHandler.h"
+
 #include <memory>
+#include "TCPHandler.h"
 #include <list>
 #include <boost/asio.hpp>
 #include <boost/asio/buffer.hpp>
@@ -12,7 +13,7 @@
 #include <boost/bind.hpp>
 #include "iNetworkReceive.h"
 #include "seriealizeFunctions.h"
-#include "queue.h"
+#include "Queue.h"
 
 namespace network {
 	const std::string delimiter = "\r\n";

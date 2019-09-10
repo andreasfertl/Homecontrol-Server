@@ -1,4 +1,3 @@
-#pragma once
 #include <any>
 #include <functional>
 #include "Message.h"
@@ -20,9 +19,9 @@ namespace PreParseMsg {
 					std::any_cast<std::function<void()>>(runCmd)();
 					return preParseMsg::handeld;
 				}
-				catch (std::bad_any_cast &e)
+				catch (...)
 				{
-					auto expl = e.what();
+					//auto expl = e.what();
 					return preParseMsg::error;
 				}
 			}

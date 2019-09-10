@@ -1,11 +1,12 @@
 #include "Configuration.h"
 #include "IGetConfiguration.h"
 #include "Logging.h"
+#include "StringTools.h"
 #include <cpprest/json.h>
 #include <array>
-
 #include <iostream>
 #include <fstream>
+#include <string>
 
 namespace {
 
@@ -14,7 +15,11 @@ namespace {
 		std::wstring config;
 		std::wstring line;
 		
+#ifdef _WIN32
 		std::wifstream configfile(configurationFile);
+#else 
+		std::wifstream configfile(StringTools::AsString(configurationFile));
+#endif 
 
 		if (configfile.is_open())
 		{
@@ -30,10 +35,18 @@ namespace {
 	std::optional<web::json::value> GetConfigSection(const std::wstring& section, const std::wstring& configFileContent)
 	{
 		try {
-			web::json::value config = web::json::value::parse(utility::conversions::to_string_t(configFileContent));
 
+#ifdef _WIN32
+			web::json::value config = web::json::value::parse(utility::conversions::to_string_t(configFileContent));
+#else 
+			web::json::value config = web::json::value::parse(StringTools::AsString(configFileContent));
+#endif 
 			//try reading the given section
+#ifdef _WIN32
 			auto confiSection = config[U("Configuration")][utility::conversions::to_string_t(section)];
+#else 
+			auto confiSection = config[U("Configuration")][StringTools::AsString(section)];
+#endif 
 			if (!confiSection.is_null())
 				return confiSection;
 		}
@@ -52,6 +65,7 @@ namespace {
 
 			if (!sonosConf.is_null())
 			{
+#ifdef _WIN32
 				return ConfigurationSonos(
 					sonosConf[U("secret")].as_string(),
 					sonosConf[U("key")].as_string(),
@@ -66,6 +80,23 @@ namespace {
 						sonosConf[U("configToken")][U("token_type")].as_string(),
 						sonosConf[U("configToken")][U("scope")].as_string(),
 					});
+#else 
+				return ConfigurationSonos(
+					StringTools::AsWstring(sonosConf[U("secret")].as_string()),
+					StringTools::AsWstring(sonosConf[U("key")].as_string()),
+					StringTools::AsWstring(sonosConf[U("authUrl")].as_string()),
+					StringTools::AsWstring(sonosConf[U("tokenUrl")].as_string()),
+					StringTools::AsWstring(sonosConf[U("scope")].as_string()),
+					StringTools::AsWstring(sonosConf[U("redirectUrl")].as_string()),
+					StringTools::AsWstring(sonosConf[U("controlUrl")].as_string()),
+					{
+						StringTools::AsWstring(sonosConf[U("configToken")][U("access_token")].as_string()),
+						StringTools::AsWstring(sonosConf[U("configToken")][U("refresh_token")].as_string()),
+						StringTools::AsWstring(sonosConf[U("configToken")][U("token_type")].as_string()),
+						StringTools::AsWstring(sonosConf[U("configToken")][U("scope")].as_string()),
+					});
+#endif 
+
 			}
 		}
 		catch (...) {
@@ -80,7 +111,7 @@ namespace {
 
 		std::vector<ConfigurationLights> configuredLights;
 
-		if (config->is_null())
+		if (!config.has_value())
 			return configuredLights;
 
 		auto& lights = (*config)[U("Lights")];
@@ -89,7 +120,11 @@ namespace {
 			auto lightsArray = lights.as_array();
 			for (auto light : lightsArray)
 			{
+#ifdef _WIN32
 				configuredLights.emplace_back(light[U("InternalId")].as_integer(), light[U("id")].as_integer(), light[U("name")].as_string());
+#else 
+				configuredLights.emplace_back(light[U("InternalId")].as_integer(), light[U("id")].as_integer(), StringTools::AsWstring(light[U("name")].as_string()));
+#endif 
 			}
 		}
 
@@ -97,15 +132,23 @@ namespace {
 	}
 
 
-	ConfigurationPhilipsHue ReadPhilipsHueConfiguration(std::optional<web::json::value> configuration) {
+	ConfigurationPhilipsHue ReadPhilipsHueConfiguration(std::optional<web::json::value> configuration, struct IPrint& iPrint) {
 
 		try {
 			if (!configuration.value().is_null())
 			{
+#ifdef _WIN32
 				return ConfigurationPhilipsHue(
 					configuration.value()[U("ip")].as_string(),
 					configuration.value()[U("key")].as_string(),
 					ReadConfiguredLights(configuration));
+#else 
+				auto ip = StringTools::AsWstring(configuration.value()[U("ip")].as_string());
+				auto key = StringTools::AsWstring(configuration.value()[U("key")].as_string());
+				Logg(iPrint, ip);
+				Logg(iPrint, key);
+				return ConfigurationPhilipsHue(ip, key, ReadConfiguredLights(configuration));
+#endif 
 			}
 		}
 		catch (...) {
@@ -165,7 +208,12 @@ namespace {
 			auto sensorsArray = sensors.as_array();
 			for (auto sensor : sensorsArray)
 			{
+#ifdef _WIN32
 				configuredSensors.emplace_back(sensor[U("InternalId")].as_integer(), sensor[U("id")].as_integer(), sensor[U("name")].as_string());
+#else 
+				configuredSensors.emplace_back(sensor[U("InternalId")].as_integer(), sensor[U("id")].as_integer(), StringTools::AsWstring(sensor[U("name")].as_string()));
+#endif 
+
 			}
 		}
 
@@ -197,7 +245,7 @@ public:
 		m_IPrint(iPrint),
 		m_ConfigFileContent(ReadConfigFile(configurationFile)),
 		m_ConfigurationSonos(ReadSonosConfiguration(GetConfigSection(L"Sonos", m_ConfigFileContent))),
-		m_ConfigurationPhilipsHue(ReadPhilipsHueConfiguration(GetConfigSection(L"PhilipsHue", m_ConfigFileContent))),
+		m_ConfigurationPhilipsHue(ReadPhilipsHueConfiguration(GetConfigSection(L"PhilipsHue", m_ConfigFileContent), m_IPrint)),
 		m_ConfigurationTelldus(ReadTelldusConfiguration(GetConfigSection(L"Telldus", m_ConfigFileContent))),
 		m_ConfigurationRemoteManager(ReadRemoteManagerConfiguration(GetConfigSection(L"RemoteManager", m_ConfigFileContent))),
 		m_ConfigurationSensorManager(ReadSensorManagerConfigurationConfiguration(GetConfigSection(L"Sensors", m_ConfigFileContent)))

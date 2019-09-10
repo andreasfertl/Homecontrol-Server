@@ -36,6 +36,11 @@ namespace StringTools
 		return std::wstring(str.begin(), str.end());
 	}
 
+	std::wstring AsWstring(const std::wstring& str)
+	{
+		return str;
+	}
+
 	std::wstring AsWstring(char* str)
 	{
 		if (str)
@@ -47,6 +52,11 @@ namespace StringTools
 	std::string AsString(const std::wstring& str)
 	{
 		return std::string(str.begin(), str.end()); //generates warning in vs 2019
+	}
+
+	std::string AsString(const std::string& str)
+	{
+		return str;
 	}
 
 	std::wstring FormatWithXDigits(double value, unsigned int digits)

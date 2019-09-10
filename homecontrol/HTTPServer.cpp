@@ -1,10 +1,10 @@
 #include "HTTPServer.h"
-#include "logging.h"
 #include "iNetworkReceive.h"
 #include <cpprest/http_listener.h>
 #include <thread>
 #include "iRESTApi.h"
 #include "Logging.h"
+#include "StringTools.h"
 
 
 class HTTPServerImpl {
@@ -13,7 +13,7 @@ public:
 	HTTPServerImpl(struct IPrint& iLogger, const std::wstring& url, const iRESTApi& receiveCallback) :
 		m_ILogger(iLogger),
 		m_ReceiveCallback(receiveCallback),
-		m_listener(url)
+		m_listener(utility::conversions::to_string_t(StringTools::AsString(url)))
 	{
 		m_listener.support(web::http::methods::GET, std::bind(&HTTPServerImpl::get, this, std::placeholders::_1));
 		m_listener.support(web::http::methods::PUT, std::bind(&HTTPServerImpl::put, this, std::placeholders::_1));
