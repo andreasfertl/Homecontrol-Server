@@ -21,10 +21,10 @@ void networkMessageHandler::receive(const networkMessage& nwMessage) const
 {
 	//parsing CMD
 	int sensorId(0);
-	if (nwMessage.m_Message == "Get11\r\n")
-		sensorId = 11;
-	else if (nwMessage.m_Message == "Get12\r\n")
-		sensorId = 12;
+	if (nwMessage.m_Message == "Get1\r\n")
+		sensorId = 1030;
+	else if (nwMessage.m_Message == "Get2\r\n")
+		sensorId = 1031;
 	else
 		return;
 
