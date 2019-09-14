@@ -43,8 +43,8 @@ namespace JSONHandlerN {
 	}
 
 	void setSensor(web::json::value& json, const Sensor& sensor) {
-		auto id = utility::conversions::to_string_t(std::to_string(sensor.m_Id));
-		JSONHandlerN::setInteger(json[U("sensor")][id], U("id"), sensor.m_Id);
+		auto id = utility::conversions::to_string_t(std::to_string(sensor.m_InternalId));
+		JSONHandlerN::setInteger(json[U("sensor")][id], U("id"), sensor.m_InternalId);
 		JSONHandlerN::setDouble(json[U("sensor")][id], U("temperature"), sensor.m_Temperature);
 		JSONHandlerN::setInteger(json[U("sensor")][id], U("humidity"), sensor.m_Humididty);
 		JSONHandlerN::setString(json[U("sensor")][id], U("name"), sensor.m_Name);
