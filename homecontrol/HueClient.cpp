@@ -72,22 +72,31 @@ LightState HueClient::ReadLightState(unsigned int lamp)
 
 bool HueClient::SetLightState(unsigned int lamp, LightState state)
 {
-	http_client client(BuildUrl(U("lights"), m_Ip, m_Key, lamp));
+	bool success(false);
 
-	//build json data
-	web::json::value parameters = web::json::value::object();
-	if (state == LightState::On)
-		parameters[U("on")] = web::json::value::boolean(true);
-	else
-		parameters[U("on")] = web::json::value::boolean(false);
+	try {
+		http_client client(BuildUrl(U("lights"), m_Ip, m_Key, lamp));
 
-	auto request = client.request(methods::PUT, U("state"), parameters).then([](http_response response) -> bool {
-		if (response.status_code() == status_codes::OK)
-			return true;
+		//build json data
+		web::json::value parameters = web::json::value::object();
+		if (state == LightState::On)
+			parameters[U("on")] = web::json::value::boolean(true);
 		else
-			return false;
-	});
+			parameters[U("on")] = web::json::value::boolean(false);
 
-	return request.get();
+		auto request = client.request(methods::PUT, U("state"), parameters).then([](http_response response) -> bool {
+			if (response.status_code() == status_codes::OK)
+				return true;
+			else
+				return false;
+			});
+		
+		success = request.get();
+	}
+	catch (...) {
+
+	}
+
+	return success;
 }
 
