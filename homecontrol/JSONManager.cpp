@@ -43,18 +43,16 @@ namespace JSONHandlerN {
 	}
 
 	void setSensor(web::json::value& json, const Sensor& sensor) {
-		auto id = utility::conversions::to_string_t(std::to_string(sensor.m_Id));
-		JSONHandlerN::setInteger(json[U("sensor")][id], U("id"), sensor.m_Id);
-		JSONHandlerN::setDouble(json[U("sensor")][id], U("temperature"), sensor.m_Temperature);
-		JSONHandlerN::setInteger(json[U("sensor")][id], U("humidity"), sensor.m_Humididty);
-		JSONHandlerN::setString(json[U("sensor")][id], U("name"), sensor.m_Name);
+		JSONHandlerN::setInteger(json, U("id"), sensor.m_InternalId);
+		JSONHandlerN::setDouble(json, U("temperature"), sensor.m_Temperature);
+		JSONHandlerN::setInteger(json, U("humidity"), sensor.m_Humididty);
+		JSONHandlerN::setString(json, U("name"), sensor.m_Name);
 	}
 
 	void setLight(web::json::value& json, const MessageLightState& light) {
-		auto id = utility::conversions::to_string_t(std::to_string(light.m_Id));
-		JSONHandlerN::setInteger(json[U("light")][id], U("id"), light.m_Id);
-		JSONHandlerN::setBool(json[U("light")][id], U("on"), light.m_On);
-		JSONHandlerN::setString(json[U("light")][id], U("name"), light.m_Name);
+		JSONHandlerN::setInteger(json, U("id"), light.m_Id);
+		JSONHandlerN::setBool(json, U("on"), light.m_On);
+		JSONHandlerN::setString(json, U("name"), light.m_Name);
 	}
 }
 
@@ -78,20 +76,25 @@ web::json::value JSONManager::getSensor(unsigned int internalId) const {
 	auto sensor = MassageWithDirectAnswer::SendAndRead<Sensor>(m_RuntimeMessageHandler, Id::Sensor, Sensor(internalId));
 
 	web::json::value json;
-	JSONHandlerN::setSensor(json, sensor);
+	JSONHandlerN::setSensor(json[U("sensor")], sensor);
 	return json;
 }
 
 web::json::value JSONManager::getAllSensors() const {
 	auto sensors = MassageWithDirectAnswer::SendAndRead<std::list<Sensor>>(m_RuntimeMessageHandler, Id::Sensors, std::list<Sensor>());
 
-	web::json::value json;
+	std::vector<web::json::value> sensorsInJson;
 
 	for (const auto& sensor : sensors) {
+		web::json::value json;
 		JSONHandlerN::setSensor(json, sensor);
+		sensorsInJson.push_back(json);
 	}
 
-	return json;
+	web::json::value json_array;
+	json_array[U("sensor")] = web::json::value::array(sensorsInJson);
+
+	return json_array;
 }
 
 
@@ -99,7 +102,7 @@ web::json::value JSONManager::getLightState(unsigned int internalId) const {
 	auto lightstate = MassageWithDirectAnswer::SendAndRead<MessageLightState>(m_RuntimeMessageHandler, Id::LightState, MessageLightState(internalId, false, L""));
 
 	web::json::value json;
-	JSONHandlerN::setLight(json, lightstate);
+	JSONHandlerN::setLight(json[U("light")], lightstate);
 
 	return json;
 
@@ -120,6 +123,19 @@ web::json::value JSONManager::getAllLights() const
 	for (const auto& light : lights) {
 		JSONHandlerN::setLight(json, light);
 	}
+
+	std::vector<web::json::value> lightsInJson;
+
+	for (const auto& light : lights) {
+		web::json::value json;
+		JSONHandlerN::setLight(json, light);
+		lightsInJson.push_back(json);
+	}
+
+	web::json::value json_array;
+	json_array[U("light")] = web::json::value::array(lightsInJson);
+
+	return json_array;
 
 	return json;
 }

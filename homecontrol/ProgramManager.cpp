@@ -20,10 +20,10 @@ ProgramManager::ProgramManager(IPrint& iPrint) :
 	m_SensorManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription),
 	m_JSONManager(m_ThreadManager),
 	m_RESTApi(m_JSONManager),
-	m_HTTPServer(iPrint, L"http://localhost:40000/v1/", m_RESTApi),
+	m_HTTPServer(iPrint, L"http://192.168.68.8:40000/v1/", m_RESTApi),
 	m_NetworkReceiveHandler(iPrint),
 	m_NetworkMessageHandler(iPrint, m_ThreadManager, m_Subscription, m_JSONManager),
-	m_TCPHandler(30000, m_NetworkMessageHandler)
+	m_TCPHandler(30000, m_NetworkReceiveHandler)
 	//m_SonosManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription)
 {
 }
