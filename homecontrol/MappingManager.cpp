@@ -10,6 +10,7 @@
 #include "BluetoothDevice.h"
 #include "Logging.h"
 #include "MandloynSensor.h"
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 namespace {
 
@@ -26,13 +27,43 @@ namespace {
 		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1014, on, L"")));
 		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1015, on, L"")));
 		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1016, on, L"")));
+		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1023, on, L"")));
+		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1024, on, L"")));
+	}
+		
+	auto ConvertHoursToMyTimezone(long long hour) {
+		if (hour > 0)
+			return hour - 1; //!!! need to read the timezone
+		return hour;
+	}
+
+	auto constructTime() {
+
+		std::string ts("2019-12-08 02:57:59.000");
+		boost::posix_time::ptime time(boost::posix_time::time_from_string(ts));
+		return time;
+	}
+
+	auto simulateTime() {
+		static boost::posix_time::ptime timeDate;
+		static bool init(true);
+		if (init) {
+			timeDate = constructTime();
+			init = false;
+		}
+
+		//increment seconds
+		//timeDate += boost::posix_time::seconds(1);
+		timeDate += boost::posix_time::hours(1);
+
+		return timeDate.time_of_day();
 	}
 }
 
 
 MappingManager::MappingManager(IPrint& iPrint, IRuntimeRegister& iRuntimeRegister, ISubscribe& iSubscribe) :
 	m_IPrint(iPrint),
-	m_RuntimeMessageHandler(iRuntimeRegister.RegisterRuntime({ StringTools::AsWstring(__FILE__), runtimeId::MappingManager, std::chrono::milliseconds(100) }, *this)),
+	m_RuntimeMessageHandler(iRuntimeRegister.RegisterRuntime({ StringTools::AsWstring(__FILE__), runtimeId::MappingManager, std::chrono::milliseconds(1000) }, *this)),
 	m_SomeOneAtHome(),
 	m_AtLeastOneAtHome(false)
 {
@@ -50,34 +81,44 @@ static unsigned int state(0);
 
 void MappingManager::Callback()
 {
-	static float temperatureInc(0.0f);
+	auto date = boost::posix_time::microsec_clock::universal_time();
+	//auto time = date.time_of_day();
+	auto time = simulateTime();
 
 	switch (state)
 	{
 	case 0:
-		temperatureInc = temperatureInc + 0.02f;
-		if (temperatureInc > 20)
-			temperatureInc = 0.02f;
-		std::this_thread::sleep_for(std::chrono::seconds(1));
+		Logg(m_IPrint, L"Starting day at: " << StringTools::AsWstring(to_simple_string(date.date())) << L" " << StringTools::AsWstring(to_simple_string(time)));
 		state = 1;
 		break;
-	case 1:
-		/*m_Thread.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1004, true)));
-		m_Thread.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1005, true)));
-		m_Thread.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1006, true)));
-		m_Thread.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1007, true)));
-		m_Thread.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1009, true)));
 
-		m_Thread.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1012, true)));
-		m_Thread.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1013, true)));
-		m_Thread.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1014, true)));
-		m_Thread.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1015, true)));
-		m_Thread.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1016, true)));*/
-		//m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::SoundPause));
-		m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::MandolynSensor, MandolynSensor(21, (18.4f+temperatureInc), 56)));
-		m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::MandolynSensor, MandolynSensor(11, (17.2f+temperatureInc), 75)));
-		m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::MandolynSensor, MandolynSensor(12, (22.1f+temperatureInc), 41)));
-		state = 0;
+	case 1:
+		if (time.hours() >= ConvertHoursToMyTimezone(15))
+		{
+			//lights on
+			SendAutomaticLights(m_RuntimeMessageHandler, true);
+			Logg(m_IPrint, L"Lights ON at: " << StringTools::AsWstring(to_simple_string(time)));
+			state = 2;
+		}
+		break;
+
+	case 2:
+		if (time.hours() >= ConvertHoursToMyTimezone(23))
+		{
+			//lights off
+			SendAutomaticLights(m_RuntimeMessageHandler, false);
+			Logg(m_IPrint, L"Lights OFF at: " << StringTools::AsWstring(to_simple_string(time)));
+			state = 3;
+		}
+		break;
+
+	case 3:
+		//wait to next day to go further automatic
+		if (time.hours() == ConvertHoursToMyTimezone(0))
+		{
+			Logg(m_IPrint, L"Shifting day at: " << StringTools::AsWstring(to_simple_string(date.date())) << L" " << StringTools::AsWstring(to_simple_string(time)));
+			state = 1;
+		}
 		break;
 
 	default:
@@ -169,7 +210,7 @@ void MappingManager::HandleMessage(const Message & msg)
 				if (m_AtLeastOneAtHome != atLeastOneAtHome)
 				{
 					m_AtLeastOneAtHome = atLeastOneAtHome;
-					SendAutomaticLights(m_RuntimeMessageHandler, m_AtLeastOneAtHome);
+					//SendAutomaticLights(m_RuntimeMessageHandler, m_AtLeastOneAtHome);
 				}
 			}
 		}
