@@ -36,7 +36,7 @@ Please follow the instructions from Microsoft to install vcpkg.
 On Ubuntu 18.10 i installed via apt these packages to be able to compile the software
 
 ```
-Linux:~/$ apt install build-essential libcpprest-dev libasio-dev -y
+Linux:~/$ apt install build-essential libcpprest-dev libasio-dev libboost-coroutine-dev -y
 ```
 
 In the homecontrol folder you find the Makefile.
