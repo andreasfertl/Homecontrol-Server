@@ -34,7 +34,7 @@ Please follow the instructions from Microsoft to install vcpkg.
 
 #### Short install version for Windows
 ```
-\vcpkg.exe install cpprestsdk cpprestsdk:x64-windows boost boost:x64-windows
+.\vcpkg.exe install cpprestsdk cpprestsdk:x64-windows boost boost:x64-windows
 ```
 
 ### Linux
