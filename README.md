@@ -31,6 +31,24 @@ cpprestsdk can be installed easily via vcpkg
 https://github.com/Microsoft/vcpkg
 
 Please follow the instructions from Microsoft to install vcpkg.
+#### Short install vcpk for Windows
+
+```
+C:\>mkdir src
+C:\>cd src
+C:\src>git clone https://github.com/microsoft/vcpkg
+Cloning into 'vcpkg'...
+remote: Enumerating objects: 27, done.
+remote: Counting objects: 100% (27/27), done.
+remote: Compressing objects: 100% (27/27), done.
+Rremote: Total 88014 (delta 10), reused 2 (delta 0), pack-reused 87987
+Receiving objects: 100% (88014/88014), 26.18 MiB | 17.22 MiB/s, done.
+Resolving deltas: 100% (54726/54726), done.
+Updating files: 100% (5350/5350), done.
+C:\src>.\vcpkg\bootstrap-vcpkg.bat
+
+Building vcpkg.exe ...
+```
 
 #### Short install version for Windows
 ```
