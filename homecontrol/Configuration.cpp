@@ -199,7 +199,7 @@ namespace {
 
 		std::vector<TempHumidity> configuredSensors;
 
-		if (config->is_null())
+		if (!config.has_value() || config->is_null())
 			return configuredSensors;
 
 		auto& sensors = (*config)[U("TempHumidity")];

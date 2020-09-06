@@ -76,19 +76,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\andref\vcpkg\installed\x86-windows\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\src\vcpkg\installed\x86-windows\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\andre\vcpkg\installed\x64-windows\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\src\vcpkg\installed\x64-windows\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\andref\vcpkg\installed\x86-windows\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\src\vcpkg\installed\x86-windows\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\andre\vcpkg\installed\x64-windows\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\src\vcpkg\installed\x64-windows\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -104,7 +104,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>C:\Users\andref\vcpkg\installed\x86-windows\debug\lib\cpprest_2_10d.lib;C:\Users\andref\vcpkg\installed\x86-windows\debug\lib\boost_system-vc140-mt-gd.lib;C:\Users\andref\vcpkg\installed\x86-windows\debug\lib\boost_coroutine-vc140-mt-gd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>C:\src\vcpkg\installed\x86-windows\debug\lib\cpprest_2_10d.lib;C:\src\vcpkg\installed\x86-windows\debug\lib\boost_system-vc140-mt-gd.lib;C:\src\vcpkg\installed\x86-windows\debug\lib\boost_coroutine-vc140-mt-gd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -121,7 +121,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>C:\Users\andre\vcpkg\installed\x64-windows\debug\lib\cpprest_2_10d.lib;C:\Users\andre\vcpkg\installed\x64-windows\debug\lib\boost_system-vc140-mt-gd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>C:\src\vcpkg\installed\x64-windows\debug\lib\cpprest_2_10d.lib;C:\src\vcpkg\installed\x64-windows\debug\lib\boost_system-vc140-mt-gd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -142,7 +142,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>C:\Users\andref\vcpkg\installed\x86-windows\lib\cpprest_2_10.lib;C:\Users\andref\vcpkg\installed\x86-windows\lib\boost_system-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>C:\src\vcpkg\installed\x86-windows\lib\cpprest_2_10.lib;C:\src\vcpkg\installed\x86-windows\lib\boost_system-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -163,7 +163,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>C:\Users\andre\vcpkg\installed\x64-windows\lib\cpprest_2_10.lib;C:\Users\andre\vcpkg\installed\x64-windows\lib\boost_system-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>C:\src\vcpkg\installed\x64-windows\lib\cpprest_2_10.lib;C:\src\vcpkg\installed\x64-windows\lib\boost_system-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
