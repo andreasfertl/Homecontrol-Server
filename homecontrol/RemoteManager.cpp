@@ -40,6 +40,10 @@ void RemoteManager::HandleMessage(const Message & msg)
 void RemoteManager::receive(const networkMessage& nwMessage) const
 {
 	auto msg = Message(nwMessage.m_Message);
+
+	//if (msg.GetId() != Id::Alive)
+//		Logg(m_IPrint, L"received: " << StringTools::AsWstring(nwMessage.m_Message));
+
 	if (msg.GetCmd() == Cmd::Write && msg.GetId() == Id::Subscribe) //need to subscribe for remote peer 
 	{
 		if (auto subscribeTo = msg.GetValue<int>(&m_IPrint))

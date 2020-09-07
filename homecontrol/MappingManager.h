@@ -3,6 +3,7 @@
 #include <string>
 #include <map>
 #include "IRuntime.h"
+#include "BluetoothDevice.h"
 
 class MappingManager : public IRuntime
 {
@@ -17,7 +18,7 @@ public:
 private:
 	struct IPrint& m_IPrint;
 	struct IRuntimeMessageHandling& m_RuntimeMessageHandler;
-	std::map<std::wstring, bool> m_SomeOneAtHome; //key "bt addr", value in range
+	std::map<int, BluetoothDevice> m_SomeOneAtHome; //key "device", value in range
 	bool m_AtLeastOneAtHome;
 };
 

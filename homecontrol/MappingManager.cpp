@@ -16,24 +16,25 @@ namespace {
 
 	void SendAutomaticLights(IRuntimeMessageHandling& iSender, bool on)
 	{
-		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1004, on, L"")));
-		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1005, on, L"")));
-		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1006, on, L"")));
-		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1007, on, L"")));
-		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1009, on, L"")));
-
-		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1012, on, L"")));
-		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1013, on, L"")));
+		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1010, on, L"")));
 		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1014, on, L"")));
-		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1015, on, L"")));
-		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1016, on, L"")));
-		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1023, on, L"")));
-		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1024, on, L"")));
+
+		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1009, on, L"")));
+		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1007, on, L"")));
+		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1012, on, L"")));
+
+		iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1013, on, L"")));
+
+		//iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1014, on, L"")));
+		//iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1015, on, L"")));
+		//iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1016, on, L"")));
+		//iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1023, on, L"")));
+		//iSender.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(1024, on, L"")));
 	}
 		
 	auto ConvertHoursToMyTimezone(long long hour) {
 		if (hour > 0)
-			return hour - 1; //!!! need to read the timezone
+			return hour - 2; //!!! need to read the timezone
 		return hour;
 	}
 
@@ -82,8 +83,8 @@ static unsigned int state(0);
 void MappingManager::Callback()
 {
 	auto date = boost::posix_time::microsec_clock::universal_time();
-	//auto time = date.time_of_day();
-	auto time = simulateTime();
+	auto time = date.time_of_day();
+	//auto time = simulateTime();
 
 	switch (state)
 	{
@@ -93,7 +94,7 @@ void MappingManager::Callback()
 		break;
 
 	case 1:
-		if (time.hours() >= ConvertHoursToMyTimezone(15))
+		if (time.hours() >= ConvertHoursToMyTimezone(20))
 		{
 			//lights on
 			SendAutomaticLights(m_RuntimeMessageHandler, true);
@@ -189,7 +190,7 @@ void MappingManager::HandleMessage(const Message & msg)
 		if (auto btDev = msg.GetValue<BluetoothDevice>(&m_IPrint))
 		{
 			auto oldSomeOneAtHome = m_SomeOneAtHome;
-			m_SomeOneAtHome[btDev->GetAddress()] = btDev->GetInRange();
+			m_SomeOneAtHome[btDev->GetDeviceId()] = *btDev;
 
 			//did something change?
 			if (oldSomeOneAtHome != m_SomeOneAtHome)
@@ -198,8 +199,8 @@ void MappingManager::HandleMessage(const Message & msg)
 				bool atLeastOneAtHome = false;
 				for (const auto& someoneAtHome : m_SomeOneAtHome)
 				{
-					const bool& atHome = someoneAtHome.second;
-					if (atHome)
+					const auto& device = someoneAtHome.second;
+					if (device.GetInRange())
 					{
 						atLeastOneAtHome = true;
 						break;
@@ -212,11 +213,18 @@ void MappingManager::HandleMessage(const Message & msg)
 					m_AtLeastOneAtHome = atLeastOneAtHome;
 					//SendAutomaticLights(m_RuntimeMessageHandler, m_AtLeastOneAtHome);
 				}
+
+				if (!atLeastOneAtHome)
+				{
+					Logg(m_IPrint, L"Bluetooth: No one at home");
+				}
+				else
+				{
+					Logg(m_IPrint, L"Bluetooth: At least someone at home");
+				}
 			}
 		}
-
 	}
-
 }
 
 

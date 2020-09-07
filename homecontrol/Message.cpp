@@ -49,12 +49,15 @@ namespace {
 		{
 			auto inRange = data[U("InRange")].as_bool();
 			auto mac = data[U("BTMacAddr")].as_string();
+			
+			auto deviceId = data[U("DeviceId")].as_integer();
+
 #ifdef _WIN32
 			auto macAddr = mac;
 #else 
 			auto macAddr = StringTools::AsWstring(mac);
 #endif 
-			value = BluetoothDevice(macAddr, inRange);
+			value = BluetoothDevice(deviceId, macAddr, inRange);
 		}
 		else if (id == Id::Subscribe)
 		{

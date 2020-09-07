@@ -5,21 +5,31 @@ class BluetoothDevice
 {
 
 public:
-	BluetoothDevice(const std::wstring& addr, bool inRange) :
+	BluetoothDevice() :
+		m_DeviceId(0),
+		m_Address(),
+		m_InRange(false)
+	{
+	}
+
+	BluetoothDevice(int deviceId, const std::wstring& addr, bool inRange) :
+		m_DeviceId(deviceId),
 		m_Address(addr),
 		m_InRange(inRange)
 	{
 	}
 
-	const std::wstring& GetAddress() { return m_Address; }
-	const bool GetInRange() { return m_InRange; }
-
 	bool operator==(const BluetoothDevice& rhs) const {
-		return m_Address == rhs.m_Address && m_InRange == rhs.m_InRange;
+		return m_Address == rhs.m_Address && m_InRange == rhs.m_InRange && m_DeviceId == rhs.m_DeviceId;
 	}
 
+	int GetDeviceId() const { return m_DeviceId; }
+	const std::wstring& GetAddress() const { return m_Address; }
+	bool GetInRange() const { return m_InRange; }
+
 private:
-	const std::wstring m_Address;
-	const bool        m_InRange;
+	int          m_DeviceId;
+	std::wstring m_Address;
+	bool         m_InRange;
 
 };
