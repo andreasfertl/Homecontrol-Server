@@ -89,7 +89,7 @@ namespace {
 
 TelldusCommandLineManager::TelldusCommandLineManager(IPrint& iPrint, IRuntimeRegister& iRuntimeRegister, ISubscribe& iSubscribe) :
 	m_IPrint(iPrint),
-	m_RuntimeMessageHandler(iRuntimeRegister.RegisterRuntime({ StringTools::AsWstring(__FILE__), runtimeId::TelldusCommandLineManager, std::chrono::seconds(5) }, * this))
+	m_RuntimeMessageHandler(iRuntimeRegister.RegisterRuntime({ StringTools::AsWstring(__FILE__), runtimeId::TelldusCommandLineManager, std::chrono::minutes(5) }, * this))
 {
 	iSubscribe.Subscribe({ Id::CommandLine, m_RuntimeMessageHandler });
 }
