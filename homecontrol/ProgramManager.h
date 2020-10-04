@@ -19,6 +19,7 @@
 #include "SensorManager.h"
 #include "CommandLineManager.h"
 #include "TelldusCommandLineManager.h"
+#include "ScheduleManager.h"
 
 class ProgramManager
 {
@@ -47,6 +48,7 @@ private:
 	TCPHandler				m_TCPHandler;
 	CommandLineManager      m_CommandLineManager;
 	TelldusCommandLineManager m_TelldusCommandLineManager;
+	ScheduleManager           m_ScheduleManager;
 	//SonosManager            m_SonosManager;
 };
 

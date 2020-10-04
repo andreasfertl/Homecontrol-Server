@@ -100,6 +100,43 @@ public:
 	const std::vector<TempHumidity> m_TempHumiditySensors;
 };
 
+enum class ScheduleAction {
+	lightswitchOff = 0,
+	lightswitchOn = 1,
+};
+
+struct Schedule {
+public:
+	Schedule(unsigned int startHours, unsigned int startMinutes, ScheduleAction scheduleAction, const std::vector<unsigned int>& internalIds) :
+		m_StartHours(startHours),
+		m_StartMinutes(startMinutes),
+		m_ScheduleAction(scheduleAction),
+		m_InternalIds(internalIds),
+		m_Handled(false)
+	{
+	}
+
+	const unsigned int m_StartHours;
+	const unsigned int m_StartMinutes;
+	const ScheduleAction m_ScheduleAction;
+	const std::vector<unsigned int> m_InternalIds;
+	bool m_Handled;
+};
+
+struct ConfigurationScheduleManager {
+public:
+	ConfigurationScheduleManager(const std::vector<Schedule>& schedules, int utcOffset) :
+		m_Schedules(schedules),
+		m_UTCOffset(utcOffset)
+	{
+	}
+
+	const std::vector<Schedule> m_Schedules;
+	const int m_UTCOffset;
+};
+
+
+
 struct IConfigurationSonos {
 	virtual const ConfigurationSonos& GetConfigurationSonos() = 0;
 };
@@ -120,7 +157,11 @@ struct IConfigurationSensorManager {
 	virtual const ConfigurationSensorManager& GetConfigurationSensorManager() = 0;
 };
 
+struct IConfigurationScheduleManager {
+	virtual const ConfigurationScheduleManager& GetConfigurationScheduleManager() = 0;
+};
 
-struct IGetConfiguration : public IConfigurationSonos, public IConfigurationTelldus, public IConfigurationPhilipsHue, public IConfigurationRemoteManager, public IConfigurationSensorManager {
+
+struct IGetConfiguration : public IConfigurationSonos, public IConfigurationTelldus, public IConfigurationPhilipsHue, public IConfigurationRemoteManager, public IConfigurationSensorManager, public IConfigurationScheduleManager {
 
 };

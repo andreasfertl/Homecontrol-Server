@@ -233,6 +233,50 @@ namespace {
 		return ConfigurationSensorManager(std::vector<TempHumidity>()); //proceeding with a "empty" configuration
 	}
 
+	std::vector<Schedule> ReadConfiguredSchedules(std::optional<web::json::value>& config) {
+
+		std::vector<Schedule> configuredSchedules;
+		
+		if (!config.has_value() || config->is_null())
+			return configuredSchedules;
+
+		auto& schedules = (*config)[U("Schedules")];
+		if (schedules.is_array())
+		{
+			auto arr = schedules.as_array();
+			for (auto schedule : arr)
+			{
+				std::vector<unsigned int> configuredIds;
+				auto startHours = schedule[U("StartHour")].as_integer();
+				auto startMinutes = schedule[U("StartMinute")].as_integer();
+				auto scheduleAction = static_cast<ScheduleAction>(schedule[U("ScheduleAction")].as_integer());
+
+				auto& internalIds = schedule[U("InternalIds")];
+				if (internalIds.is_array()) {
+
+					auto ids = internalIds.as_array();
+					for (auto id : ids) {
+						configuredIds.push_back(id[U("InternalId")].as_integer());
+					}
+				}
+				configuredSchedules.emplace_back(startHours, startMinutes, scheduleAction, configuredIds);
+			}
+		}
+		return configuredSchedules;
+	}
+
+
+	ConfigurationScheduleManager ReadScheduleManagerConfigurationConfiguration(std::optional<web::json::value> configuration) {
+
+		try {
+			return ConfigurationScheduleManager(ReadConfiguredSchedules(configuration), configuration.value()[U("UTCOffset")].as_integer());
+		}
+		catch (...) {
+		}
+
+		//error....
+		return ConfigurationScheduleManager(std::vector<Schedule>(),0); //proceeding with a "empty" configuration
+	}
 
 
 
@@ -248,7 +292,8 @@ public:
 		m_ConfigurationPhilipsHue(ReadPhilipsHueConfiguration(GetConfigSection(L"PhilipsHue", m_ConfigFileContent), m_IPrint)),
 		m_ConfigurationTelldus(ReadTelldusConfiguration(GetConfigSection(L"Telldus", m_ConfigFileContent))),
 		m_ConfigurationRemoteManager(ReadRemoteManagerConfiguration(GetConfigSection(L"RemoteManager", m_ConfigFileContent))),
-		m_ConfigurationSensorManager(ReadSensorManagerConfigurationConfiguration(GetConfigSection(L"Sensors", m_ConfigFileContent)))
+		m_ConfigurationSensorManager(ReadSensorManagerConfigurationConfiguration(GetConfigSection(L"Sensors", m_ConfigFileContent))),
+		m_ConfigurationScheduleManager(ReadScheduleManagerConfigurationConfiguration(GetConfigSection(L"Scheduler", m_ConfigFileContent)))
 	{
 	}
 	
@@ -276,6 +321,10 @@ public:
 		return m_ConfigurationSensorManager;
 	}
 
+	const ConfigurationScheduleManager& GetConfigurationScheduleManager() override {
+		return m_ConfigurationScheduleManager;
+	}
+
 private:
 	struct IPrint& m_IPrint;
 	std::wstring m_ConfigFileContent;
@@ -284,6 +333,7 @@ private:
 	const ConfigurationTelldus m_ConfigurationTelldus;
 	const ConfigurationRemoteManager m_ConfigurationRemoteManager;
 	const ConfigurationSensorManager m_ConfigurationSensorManager;
+	const ConfigurationScheduleManager m_ConfigurationScheduleManager;
 };
 
 

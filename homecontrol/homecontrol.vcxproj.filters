@@ -225,6 +225,9 @@
     <ClInclude Include="TelldusCommandLineManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ScheduleManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Message.cpp">
@@ -324,6 +327,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TelldusCommandLineManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScheduleManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

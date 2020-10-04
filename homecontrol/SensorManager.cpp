@@ -25,6 +25,7 @@ SensorManager::SensorManager(IPrint& iPrint, IConfigurationSensorManager& iGetCo
 
 SensorManager::~SensorManager()
 {
+	m_RuntimeMessageHandler.Stop();
 }
 
 void SensorManager::Callback()

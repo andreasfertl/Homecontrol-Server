@@ -79,7 +79,7 @@ MappingManager::~MappingManager()
 }
 
 
-static unsigned int state(0);
+static unsigned int state(4);
 
 void MappingManager::Callback()
 {

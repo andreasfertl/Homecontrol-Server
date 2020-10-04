@@ -34,7 +34,18 @@ public:
 	}
 
 	~HTTPServerImpl() {
-		m_listener.close().wait();
+		try
+		{
+			m_listener.close().wait();
+		}
+		catch (std::exception const& e)
+		{
+			Logg(m_ILogger, e.what());
+		}
+		catch (...)
+		{
+			Logg(m_ILogger, L"error on destruction of the httpserver");
+		}
 	}
 
 

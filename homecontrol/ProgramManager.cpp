@@ -25,7 +25,8 @@ ProgramManager::ProgramManager(IPrint& iPrint) :
 	m_NetworkMessageHandler(iPrint, m_ThreadManager, m_Subscription, m_JSONManager),
 	m_TCPHandler(30000, m_NetworkReceiveHandler),
 	m_CommandLineManager(iPrint, m_ThreadManager, m_Subscription),
-	m_TelldusCommandLineManager(iPrint, m_ThreadManager, m_Subscription)
+	m_TelldusCommandLineManager(iPrint, m_ThreadManager, m_Subscription),
+	m_ScheduleManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription)
 	//m_SonosManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription)
 {
 }

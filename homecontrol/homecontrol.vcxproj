@@ -215,6 +215,7 @@
     <ClInclude Include="RemoteTelldus.h" />
     <ClInclude Include="RESTApi.h" />
     <ClInclude Include="Runner.h" />
+    <ClInclude Include="ScheduleManager.h" />
     <ClInclude Include="Sensor.h" />
     <ClInclude Include="SensorManager.h" />
     <ClInclude Include="seriealizeFunctions.h" />
@@ -252,6 +253,7 @@
     <ClCompile Include="RemoteManager.cpp" />
     <ClCompile Include="RemoteTelldus.cpp" />
     <ClCompile Include="RESTApi.cpp" />
+    <ClCompile Include="ScheduleManager.cpp" />
     <ClCompile Include="SensorManager.cpp" />
     <ClCompile Include="serializeFunctions.cpp" />
     <ClCompile Include="SonosClient.cpp" />

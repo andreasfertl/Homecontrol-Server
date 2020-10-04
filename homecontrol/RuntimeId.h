@@ -11,4 +11,5 @@ enum class runtimeId {
 	SensorManager,
 	CommandLineManager,
 	TelldusCommandLineManager,
+	ScheduleManager,
 };

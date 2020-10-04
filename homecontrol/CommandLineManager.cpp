@@ -95,6 +95,11 @@ void CommandLineManager::HandleMessage(const Message& msg)
 				else if (cmd == Cmd::Read) {
 					if (auto result = run_CommandLine(commandToRun)) {
 						auto lines = StringTools::SplitString(*result, '\n');
+
+						/*for (auto line : lines) {
+							Logg(m_IPrint, L"result command: " << StringTools::AsWstring(line));
+						}*/
+
 						m_RuntimeMessageHandler.SendMessage(Message(Cmd::Answer, Id::CommandLine, lines));
 					}
 				}
