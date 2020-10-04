@@ -9,4 +9,6 @@ enum class runtimeId {
 	NetworkMessageHandler,
 	JSONManager,
 	SensorManager,
+	CommandLineManager,
+	TelldusCommandLineManager,
 };

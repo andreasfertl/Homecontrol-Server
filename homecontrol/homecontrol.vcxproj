@@ -169,6 +169,7 @@
   <ItemGroup>
     <ClInclude Include="ArctechSwitch.h" />
     <ClInclude Include="BluetoothDevice.h" />
+    <ClInclude Include="CommandLineManager.h" />
     <ClInclude Include="Configuration.h" />
     <ClInclude Include="HTTPServer.h" />
     <ClInclude Include="HueClient.h" />
@@ -225,6 +226,7 @@
     <ClInclude Include="SynchronosThread.h" />
     <ClInclude Include="SynchronosThreadManager.h" />
     <ClInclude Include="TCPHandler.h" />
+    <ClInclude Include="TelldusCommandLineManager.h" />
     <ClInclude Include="TelldusManager.h" />
     <ClInclude Include="Thread.h" />
     <ClInclude Include="ThreadManager.h" />
@@ -232,6 +234,7 @@
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CommandLineManager.cpp" />
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="HTTPServer.cpp" />
     <ClCompile Include="HueClient.cpp" />
@@ -259,6 +262,7 @@
     <ClCompile Include="SynchronosThread.cpp" />
     <ClCompile Include="SynchronosThreadManager.cpp" />
     <ClCompile Include="TCPHandler.cpp" />
+    <ClCompile Include="TelldusCommandLineManager.cpp" />
     <ClCompile Include="TelldusManager.cpp" />
     <ClCompile Include="Thread.cpp" />
     <ClCompile Include="ThreadManager.cpp" />

@@ -40,8 +40,10 @@ void SensorManager::HandleMessage(const Message& msg)
 			if (auto sensor = msg.GetValue<MandolynSensor>(&m_IPrint)) {
 				for (auto& sensorcache : m_Sensors) {
 					auto& sensorcachData = sensorcache.second;
-					if (sensorcachData.m_Id == sensor->GetId())
+					if (sensorcachData.m_Id == sensor->GetId()) {
 						sensorcachData = Sensor(sensorcachData.m_InternalId, sensorcachData.m_Id, sensor->GetTemp(), sensor->GetHumidity(), sensorcachData.m_Name);
+						Logg(m_IPrint, L"New Sensor Name: " << sensorcachData.m_Name << " ID: " << sensorcachData.m_Id << " Temp: " << sensor->GetTemp() << " Humidity: " << sensor->GetHumidity());
+					}
 				}
 			}
 		}

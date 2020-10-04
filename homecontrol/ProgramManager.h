@@ -17,6 +17,8 @@
 #include "HTTPServer.h"
 #include "RESTApi.h"
 #include "SensorManager.h"
+#include "CommandLineManager.h"
+#include "TelldusCommandLineManager.h"
 
 class ProgramManager
 {
@@ -43,6 +45,8 @@ private:
 	netWorkReceiveHandler   m_NetworkReceiveHandler;
 	networkMessageHandler   m_NetworkMessageHandler;
 	TCPHandler				m_TCPHandler;
+	CommandLineManager      m_CommandLineManager;
+	TelldusCommandLineManager m_TelldusCommandLineManager;
 	//SonosManager            m_SonosManager;
 };
 

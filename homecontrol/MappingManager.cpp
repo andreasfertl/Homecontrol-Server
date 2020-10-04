@@ -12,6 +12,7 @@
 #include "MandloynSensor.h"
 #include <boost/date_time/posix_time/posix_time.hpp>
 
+
 namespace {
 
 	void SendAutomaticLights(IRuntimeMessageHandling& iSender, bool on)
@@ -88,10 +89,11 @@ void MappingManager::Callback()
 
 	switch (state)
 	{
-	case 0:
+	case 0: {
 		Logg(m_IPrint, L"Starting day at: " << StringTools::AsWstring(to_simple_string(date.date())) << L" " << StringTools::AsWstring(to_simple_string(time)));
 		state = 1;
 		break;
+	}
 
 	case 1:
 		if (time.hours() >= ConvertHoursToMyTimezone(20))
