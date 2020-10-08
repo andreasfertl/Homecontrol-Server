@@ -11,20 +11,14 @@
 namespace {
 
 	bool isAtLeastSomeoneAtHome(std::map<int, BluetoothDevice>& presence, const BluetoothDevice& btDev) {
-		//take a copy for later comparsion
-		auto oldSomeOneAtHome = presence;
-
 		//just update
 		presence[btDev.GetDeviceId()] = btDev;
 
-		//did something change?
-		if (oldSomeOneAtHome != presence) {
-			//still at least someone at home?
-			for (const auto& someoneAtHome : presence) {
-				const auto& device = someoneAtHome.second;
-				if (device.GetInRange()) {
-					return true;
-				}
+		//still at least someone at home?
+		for (const auto& someoneAtHome : presence) {
+			const auto& device = someoneAtHome.second;
+			if (device.GetInRange()) {
+				return true;
 			}
 		}
 
@@ -77,7 +71,7 @@ void PresenceManager::HandleMessage(const Message& msg)
 	else if (cmd == Cmd::Read && id == Id::Presence) {
 		m_RuntimeMessageHandler.SendMessage(Message(Cmd::Answer, Id::Presence, m_AtLeastOneAtHome));
 	}
-	else if (cmd == Cmd::Read && id == Id::Presence) {
+	else if (cmd == Cmd::ReadWithDirectAnswer && id == Id::Presence) {
 		msg.Answer(Message(Cmd::Answer, Id::Presence, m_AtLeastOneAtHome));
 	}
 }
