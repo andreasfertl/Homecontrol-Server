@@ -198,7 +198,7 @@
     <ClInclude Include="IRuntimeRegister.h" />
     <ClInclude Include="Logging.h" />
     <ClInclude Include="MandloynSensor.h" />
-    <ClInclude Include="MappingManager.h" />
+    <ClInclude Include="PresenceManager.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="MessageLightState.h" />
     <ClInclude Include="MessageMetaData.h" />
@@ -242,7 +242,7 @@
     <ClCompile Include="HueManager.cpp" />
     <ClCompile Include="JSONManager.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MappingManager.cpp" />
+    <ClCompile Include="PresenceManager.cpp" />
     <ClCompile Include="Message.cpp" />
     <ClCompile Include="networkMessageHandler.cpp" />
     <ClCompile Include="networkReceiveHandler.cpp" />

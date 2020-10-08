@@ -105,7 +105,6 @@ web::json::value JSONManager::getLightState(unsigned int internalId) const {
 	JSONHandlerN::setLight(json[U("light")], lightstate);
 
 	return json;
-
 }
 
 web::json::value JSONManager::setLightState(unsigned int internalId, bool state) const
@@ -136,6 +135,16 @@ web::json::value JSONManager::getAllLights() const
 	json_array[U("light")] = web::json::value::array(lightsInJson);
 
 	return json_array;
+
+	return json;
+}
+
+web::json::value JSONManager::getPresence() const
+{
+	auto presence = MassageWithDirectAnswer::SendAndRead<bool>(m_RuntimeMessageHandler, Id::Presence, true);
+
+	web::json::value json;
+	JSONHandlerN::setBool(json, U("presence"), presence);
 
 	return json;
 }

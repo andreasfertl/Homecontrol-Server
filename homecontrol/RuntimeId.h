@@ -12,4 +12,5 @@ enum class runtimeId {
 	CommandLineManager,
 	TelldusCommandLineManager,
 	ScheduleManager,
+	PresenceManager,
 };

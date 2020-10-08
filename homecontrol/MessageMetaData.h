@@ -17,6 +17,7 @@ enum class Id {
 	Sensors = 23,
 	Lights = 24,
 	CommandLine = 25,
+	Presence = 26,
 };
 
 enum class Cmd {

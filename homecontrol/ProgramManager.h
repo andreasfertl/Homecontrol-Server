@@ -5,7 +5,7 @@
 #include "TelldusManager.h"
 #include "HueManager.h"
 #include "RemoteManager.h"
-#include "MappingManager.h"
+#include "PresenceManager.h"
 #include "SonosManager.h"
 #include "ThreadManager.h"
 #include "SynchronosThreadManager.h"
@@ -38,7 +38,7 @@ private:
 	RemoteManager	        m_RemoteManager;
 	TelldusManager          m_TelldusManager;
 	HueManager		        m_HueManager;
-	MappingManager          m_MappingManager;
+	PresenceManager         m_PresenceManager;
 	SensorManager           m_SensorManager;
 	JSONManager             m_JSONManager;
 	RESTApi                 m_RESTApi;

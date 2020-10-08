@@ -108,9 +108,6 @@
     <ClInclude Include="Light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MappingManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="OAuth2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -228,6 +225,9 @@
     <ClInclude Include="ScheduleManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PresenceManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Message.cpp">
@@ -264,9 +264,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RemoteManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MappingManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
@@ -330,6 +327,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ScheduleManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PresenceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

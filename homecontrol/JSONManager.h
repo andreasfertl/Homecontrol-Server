@@ -23,6 +23,7 @@ public:
 	web::json::value getLightState(unsigned int internalId) const override;
 	web::json::value setLightState(unsigned int internalId, bool state) const override;
 	web::json::value getAllLights() const override;
+	web::json::value getPresence() const override;
 
 private:
 	struct IRuntimeMessageHandling& m_RuntimeMessageHandler;
