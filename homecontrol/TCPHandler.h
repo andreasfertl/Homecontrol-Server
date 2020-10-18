@@ -4,7 +4,7 @@
 class TCPHandler {
 
 public:
-	TCPHandler(unsigned int portNr, const struct iNetworkReceive& receiveCallback);
+	TCPHandler(unsigned int portNr, const struct iNetworkReceive& receiveCallback, std::function<void(std::wstring)> logger);
 	~TCPHandler();
 
 	TCPHandler(const TCPHandler&) = delete;

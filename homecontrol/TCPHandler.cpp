@@ -2,7 +2,7 @@
 #define _WIN32_WINNT 0x0A00
 #endif
 #define BOOST_COROUTINES_NO_DEPRECATION_WARNING
-
+#define  BOOST_BIND_GLOBAL_PLACEHOLDERS
 
 #include <memory>
 #include "TCPHandler.h"
@@ -14,6 +14,8 @@
 #include "iNetworkReceive.h"
 #include "seriealizeFunctions.h"
 #include "Queue.h"
+
+using namespace boost::placeholders;
 
 namespace network {
 	const std::string delimiter = "\r\n";
@@ -31,15 +33,18 @@ class connection{
 
 public:
 	connection(boost::asio::ip::tcp::acceptor& acceptor, boost::asio::yield_context& yield, boost::asio::io_service& ioService,
-		       const iNetworkReceive& receiveCallback, const std::function<void()>& disconnectCallback) :
+		       const iNetworkReceive& receiveCallback, const std::function<void()>& disconnectCallback, std::function<void(std::wstring)> logger) :
+		m_Logger(logger),
 		m_Socket(ioService),
 		m_RxBuffer(),
 		m_ReceiveCallback(receiveCallback),
 		m_DisconnectCallback(disconnectCallback) 
 	{
 		acceptor.async_accept(m_Socket, yield);
-		if (m_Socket.is_open())
-			boost::asio::async_read_until(m_Socket, m_RxBuffer, network::delimiter, std::bind(&connection::readHandler, this, std::placeholders::_1, std::placeholders::_2));
+		if (m_Socket.is_open()) {
+			boost::asio::async_read_until(m_Socket, m_RxBuffer, network::delimiter, boost::bind(&connection::readHandler, this, _1, _2));
+			//boost::asio::async_read_until(m_Socket, m_RxBuffer, network::delimiter, std::bind(&connection::readHandler, this, std::placeholders::_1, std::placeholders::_2));
+		}
 	}
 
 	connection(const connection&) = delete;
@@ -89,18 +94,22 @@ private:
 			std::string message;
 			std::copy_n(boost::asio::buffers_begin(m_RxBuffer.data()), bytes_transferred, back_inserter(message));
 
-			m_ReceiveCallback.receive({ message, std::bind(&connection::sendMessage, this, std::placeholders::_1) });
+			m_ReceiveCallback.receive({ message, boost::bind(&connection::sendMessage, this, _1) });
+			//m_ReceiveCallback.receive({ message, std::bind(&connection::sendMessage, this, std::placeholders::_1) });
 
 			//prepare fo next "line/message"
 			m_RxBuffer.consume(bytes_transferred);
-			if (m_Socket.is_open())
-				boost::asio::async_read_until(m_Socket, m_RxBuffer, network::delimiter, std::bind(&connection::readHandler, this, std::placeholders::_1, std::placeholders::_2));
+			if (m_Socket.is_open()) {
+				boost::asio::async_read_until(m_Socket, m_RxBuffer, network::delimiter, boost::bind(&connection::readHandler, this, _1, _2));
+				//boost::asio::async_read_until(m_Socket, m_RxBuffer, network::delimiter, std::bind(&connection::readHandler, this, std::placeholders::_1, std::placeholders::_2));
+			}
 		}
 		else if (ec == boost::asio::error::eof || ec == boost::asio::error::connection_reset) {
 			m_DisconnectCallback();
 		}
 	}
 
+	std::function<void(std::wstring)> m_Logger;
 	boost::asio::ip::tcp::socket   m_Socket;
 	boost::asio::streambuf         m_RxBuffer;
 	const iNetworkReceive& m_ReceiveCallback;
@@ -111,7 +120,8 @@ private:
 class TCPHandlerImpl {
 
 public:
-	TCPHandlerImpl(unsigned int portNr, const iNetworkReceive& receiveCallback) :
+	TCPHandlerImpl(unsigned int portNr, const iNetworkReceive& receiveCallback, std::function<void(std::wstring)> logger) :
+		m_Logger(logger),
 		m_StopFlag(false),
 		m_IOService(),
 		m_Acceptor(m_IOService, ::boost::asio::ip::tcp::endpoint(::boost::asio::ip::tcp::v4(), portNr)),
@@ -159,7 +169,7 @@ public:
 			while (!inserted && m_Connections.size() < network::connectionHandleMAXValue)
 			{
 				//instance one client connection and wait for next
-				inserted = m_Connections.try_emplace(handle, m_Acceptor, yield, m_IOService, m_ReceiveCallback, std::bind(&TCPHandlerImpl::disconnect, this, handle)).second;
+				inserted = m_Connections.try_emplace(handle, m_Acceptor, yield, m_IOService, m_ReceiveCallback, std::bind(&TCPHandlerImpl::disconnect, this, handle), m_Logger).second;
 
 				if (handle >= network::connectionHandleMAXValue)
 					handle = 1; //restart to find next free handle
@@ -179,6 +189,7 @@ public:
 
 
 private:
+	std::function<void(std::wstring)>                m_Logger;
 	std::atomic_bool				                 m_StopFlag;
 	boost::asio::io_service                          m_IOService;
 	boost::asio::ip::tcp::acceptor                   m_Acceptor;
@@ -190,8 +201,8 @@ private:
 
 
 
-TCPHandler::TCPHandler(unsigned int portNr, const iNetworkReceive & receiveCallback) :
-	m_TCPHandlerImpl(std::make_unique<TCPHandlerImpl>(portNr, receiveCallback))
+TCPHandler::TCPHandler(unsigned int portNr, const iNetworkReceive & receiveCallback, std::function<void(std::wstring)> logger) :
+	m_TCPHandlerImpl(std::make_unique<TCPHandlerImpl>(portNr, receiveCallback, logger))
 {
 }
 

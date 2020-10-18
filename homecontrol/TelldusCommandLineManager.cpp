@@ -48,12 +48,13 @@ namespace {
 	}
 
 	
-	std::optional<std::tuple<int, double, int>> readSensorData(const std::string& line) {
+	std::optional<std::tuple<int, double, int>> readSensorData(const std::string& line, IPrint& iPrint) {
 		//     11      12.3°   55 % 2020 - 10 - 04 11 : 06 : 02\r\n"
 		//first one is id (int)
 		if (auto identifier = readInt(line)) {
 			const auto [id, nextElement] = *identifier;
 			if (filterIds(id)) {
+				Logg(iPrint, L"filterd to: " << StringTools::AsWstring(line));
 				//second is temperature (double)
 				if (auto temperature = readDouble(nextElement)) {
 					const auto [temp, nextElement] = *temperature;
@@ -75,7 +76,8 @@ namespace {
 
 		try {
 			if (m.size()) {
-				return readSensorData(m.suffix().str());
+				Logg(iPrint, L"Trying to read: " << StringTools::AsWstring(line));
+				return readSensorData(m.suffix().str(), iPrint);
 			}
 		}
 		catch (...) {
@@ -110,7 +112,6 @@ void TelldusCommandLineManager::HandleMessage(const Message& msg)
 	if (msg.GetId() == Id::CommandLine && cmd == Cmd::Answer) {
 		if (auto lines = msg.GetValue<std::vector<std::string>>(&m_IPrint)) {
 			for (const auto& line : *lines) {
-				Logg(m_IPrint, StringTools::AsWstring(line));
 				if (const auto valid = parseLine(line, m_IPrint)) {
 					const auto [id, temp, humidity] = *valid;
 					m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::MandolynSensor, MandolynSensor(id, temp, humidity)));

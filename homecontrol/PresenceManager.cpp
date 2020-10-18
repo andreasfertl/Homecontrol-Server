@@ -46,10 +46,13 @@ void PresenceManager::HandleMessage(const Message& msg)
 {
 	auto& cmd = msg.GetCmd();
 	auto& id = msg.GetId();
+	Logg(m_IPrint, "received message");
 	if (cmd == Cmd::Write && id == Id::BlootoothDevice)
 	{
+		Logg(m_IPrint, "received BT Device");
 		if (auto btDev = msg.GetValue<BluetoothDevice>(&m_IPrint))
 		{
+			Logg(m_IPrint, btDev->ToString());
 			auto wasSomeOneAtHomeEarlier = m_AtLeastOneAtHome;
 			m_AtLeastOneAtHome = isAtLeastSomeoneAtHome(m_SomeOneAtHome, *btDev);
 
@@ -69,9 +72,11 @@ void PresenceManager::HandleMessage(const Message& msg)
 		}
 	}
 	else if (cmd == Cmd::Read && id == Id::Presence) {
+		Logg(m_IPrint, "received read Presence");
 		m_RuntimeMessageHandler.SendMessage(Message(Cmd::Answer, Id::Presence, m_AtLeastOneAtHome));
 	}
 	else if (cmd == Cmd::ReadWithDirectAnswer && id == Id::Presence) {
+		Logg(m_IPrint, "received read Presence with direct answer");
 		msg.Answer(Message(Cmd::Answer, Id::Presence, m_AtLeastOneAtHome));
 	}
 }

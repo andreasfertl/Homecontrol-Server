@@ -26,6 +26,9 @@ public:
 	int GetDeviceId() const { return m_DeviceId; }
 	const std::wstring& GetAddress() const { return m_Address; }
 	bool GetInRange() const { return m_InRange; }
+	std::wstring ToString() {
+		return L"BtDevice id: " + std::to_wstring(m_DeviceId) + L" Addr: " + m_Address + L" Range " + std::to_wstring(m_InRange);
+	}
 
 private:
 	int          m_DeviceId;

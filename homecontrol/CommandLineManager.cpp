@@ -87,7 +87,7 @@ void CommandLineManager::HandleMessage(const Message& msg)
 		{
 			if (auto commandToRun = msg.GetValue<std::string>(&m_IPrint)) {
 
-				Logg(m_IPrint, L"Running command: " << StringTools::AsWstring(*commandToRun));
+				//Logg(m_IPrint, L"Running command: " << StringTools::AsWstring(*commandToRun));
 
 				if (cmd == Cmd::Write) {
 					run_CommandLine(commandToRun);
