@@ -37,7 +37,7 @@ namespace {
 		std::string result;
 
 #ifdef _WIN32
-		result = simulatedTdtoolCommand;
+		result;
 #else 
 		std::array<char, 128> buffer;
 		std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd.c_str(), "r"), pclose);
@@ -51,7 +51,7 @@ namespace {
 		return result;
 	}
 
-	std::optional<std::string> run_CommandLine(std::optional<std::string>& cmd) {
+	inline std::optional<std::string> run_CommandLine(std::optional<std::string>& cmd) {
 		if (cmd)
 			return run_CommandLine(*cmd);
 		else
@@ -87,7 +87,7 @@ void CommandLineManager::HandleMessage(const Message& msg)
 		{
 			if (auto commandToRun = msg.GetValue<std::string>(&m_IPrint)) {
 
-				//Logg(m_IPrint, L"Running command: " << StringTools::AsWstring(*commandToRun));
+				Logg(m_IPrint, L"Running command: " << StringTools::AsWstring(*commandToRun));
 
 				if (cmd == Cmd::Write) {
 					run_CommandLine(commandToRun);

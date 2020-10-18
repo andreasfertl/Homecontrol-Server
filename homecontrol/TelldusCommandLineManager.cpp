@@ -5,10 +5,14 @@
 #include "IRuntimeConfigure.h"
 #include "IRuntimeRegister.h"
 #include "MandloynSensor.h"
+#include "IGetConfiguration.h"
+#include "MessageLightState.h"
 
 
 namespace {
 	std::string telldusCommand{"tdtool --list"};
+	std::string telldusCommandLightOn{ "tdtool --on " };
+	std::string telldusCommandLightOff{ "tdtool --off " };
 
 	//doing this just early to avoid high load due to fail readings on tdtool
 	bool filterIds(int id) {
@@ -86,14 +90,28 @@ namespace {
 		}
 		return std::nullopt;
 	}
+
+	void AddLight(IPrint& iPrint, std::vector<Light>& lights, ILightControl& ILightControl, unsigned int id, unsigned int lampId, const std::wstring& name)
+	{
+		lights.emplace_back(ILightControl, id, lampId, name);
+		Logg(iPrint, L"Name: " << name << L" ID: " << id << L" internal ID: " << lampId);
+	}
 }
 
 
-TelldusCommandLineManager::TelldusCommandLineManager(IPrint& iPrint, IRuntimeRegister& iRuntimeRegister, ISubscribe& iSubscribe) :
+
+
+TelldusCommandLineManager::TelldusCommandLineManager(IPrint& iPrint, struct IConfigurationTelldus& iGetConfiguration, IRuntimeRegister& iRuntimeRegister, ISubscribe& iSubscribe) :
 	m_IPrint(iPrint),
 	m_RuntimeMessageHandler(iRuntimeRegister.RegisterRuntime({ StringTools::AsWstring(__FILE__), runtimeId::TelldusCommandLineManager, std::chrono::minutes(5) }, * this))
 {
 	iSubscribe.Subscribe({ Id::CommandLine, m_RuntimeMessageHandler });
+	iSubscribe.Subscribe({ Id::LightState, m_RuntimeMessageHandler });
+
+	Logg(m_IPrint, L"Adding telldusLights:");
+	auto lights = iGetConfiguration.GetConfigurationTelldus();
+	for (auto& light : lights.m_Lights)
+		AddLight(m_IPrint, m_Lights, *this, light.m_InternalId, light.m_Id, light.m_Name);
 }
 
 TelldusCommandLineManager::~TelldusCommandLineManager()
@@ -109,7 +127,10 @@ void TelldusCommandLineManager::Callback()
 void TelldusCommandLineManager::HandleMessage(const Message& msg)
 {
 	const auto& cmd = msg.GetCmd();
-	if (msg.GetId() == Id::CommandLine && cmd == Cmd::Answer) {
+	const auto& id = msg.GetId();
+
+	//Sensore
+	if (id == Id::CommandLine && cmd == Cmd::Answer) {
 		if (auto lines = msg.GetValue<std::vector<std::string>>(&m_IPrint)) {
 			for (const auto& line : *lines) {
 				if (const auto valid = parseLine(line, m_IPrint)) {
@@ -119,5 +140,55 @@ void TelldusCommandLineManager::HandleMessage(const Message& msg)
 			}
 		}
 	}
+	else if (id == Id::LightState) //light
+	{
+		if (auto lightstate = msg.GetValue<MessageLightState>(&m_IPrint))
+		{
+			const auto& cmd = msg.GetCmd();
+			if (cmd == Cmd::Write)
+			{
+				for (auto& lamp : m_Lights) {
+					if (lightstate->m_Id == lamp.GetId())
+						lamp.UpdateState(lightstate->m_On ? LightState::On : LightState::Off);
+				};
+			}
+			else if (cmd == Cmd::Read)
+			{
+				for (auto& lamp : m_Lights) {
+					if (lightstate->m_Id == lamp.GetId())
+						m_RuntimeMessageHandler.SendMessage(Message(Cmd::Answer, Id::LightState, MessageLightState(lamp.GetId(), lamp.GetState() == LightState::On ? true : false, L"")));
+				};
+			}
+			else if (cmd == Cmd::ReadWithDirectAnswer) {
+				for (auto& lamp : m_Lights) {
+					if (lightstate->m_Id == lamp.GetId()) {
+						msg.Answer(Message(Cmd::Answer, Id::LightState, MessageLightState(lamp.GetId(), lamp.GetState() == LightState::On ? true : false, L"")));
+					}
+				};
+			}
+		}
+	}
+}
+
+LightState TelldusCommandLineManager::ReadLightState(unsigned int lamp)
+{
+	return LightState::Off; //simulating just off for the moment
+}
+
+bool TelldusCommandLineManager::SetLightState(unsigned int lamp, LightState state)
+{
+	//	tdtool --on 12
+	std::string commandToSend;
+
+	if (state == LightState::On)
+		commandToSend = telldusCommandLightOn;
+	else
+		commandToSend = telldusCommandLightOff;
+
+	commandToSend += std::to_string(lamp);
+
+	m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::CommandLine, commandToSend));
+
+	return state == LightState::On;
 }
 

@@ -36,7 +36,7 @@ private:
 	ThreadManager           m_ThreadManager;
 	//SynchronosThreadManager m_SynchronosThreadManager;
 	RemoteManager	        m_RemoteManager;
-	TelldusManager          m_TelldusManager;
+	//TelldusManager          m_TelldusManager;
 	HueManager		        m_HueManager;
 	PresenceManager         m_PresenceManager;
 	SensorManager           m_SensorManager;

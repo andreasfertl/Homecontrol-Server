@@ -14,7 +14,7 @@ ProgramManager::ProgramManager(IPrint& iPrint) :
 	m_ThreadManager(iPrint),
 	//m_SynchronosThreadManager(iPrint),
 	m_RemoteManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription),
-	m_TelldusManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription),
+	//m_TelldusManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription),
 	m_HueManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription),
 	m_PresenceManager(iPrint, m_ThreadManager, m_Subscription),
 	m_SensorManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription),
@@ -25,7 +25,7 @@ ProgramManager::ProgramManager(IPrint& iPrint) :
 	m_NetworkMessageHandler(iPrint, m_ThreadManager, m_Subscription, m_JSONManager),
 	m_TCPHandler(30000, m_NetworkReceiveHandler, [&iPrint](std::wstring loggme) { Logg(iPrint, loggme); }),
 	m_CommandLineManager(iPrint, m_ThreadManager, m_Subscription),
-	m_TelldusCommandLineManager(iPrint, m_ThreadManager, m_Subscription),
+	m_TelldusCommandLineManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription),
 	m_ScheduleManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription)
 	//m_SonosManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription)
 {
