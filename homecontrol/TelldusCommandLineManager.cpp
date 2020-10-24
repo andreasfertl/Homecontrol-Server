@@ -20,6 +20,7 @@ namespace {
 		case 11:
 		case 12:
 		case 21:
+		case 24:
 			return true;
 		default:
 			return false;
