@@ -139,6 +139,50 @@ To use this you need to register a developer account for Sonos and configure you
 			"scope": "playback-control-all",
 			"secret": "secret",
 			"tokenUrl": "https://api.sonos.com/login/v3/oauth/access"
+		},
+		"Scheduler": {
+			"Schedules": [
+				{
+					"StartHour": 12,
+					"StartMinute": 5,
+					"ScheduleAction": 1,
+					"InternalIds": [
+						{
+							"InternalId": 1001
+						},
+						{
+							"InternalId": 1002
+						}
+					]
+				},
+				{
+					"StartHour": 19,
+					"StartMinute": 32,
+					"ScheduleAction": 1,
+					"InternalIds": [
+						{
+							"InternalId": 1003
+						},
+						{
+							"InternalId": 1004
+						}
+					]
+				},
+				{
+					"StartHour": 22,
+					"StartMinute": 35,
+					"ScheduleAction": 0,
+					"InternalIds": [
+						{
+							"InternalId": 1003
+						},
+						{
+							"InternalId": 1004
+						}
+					]
+				}
+			],
+			"UTCOffset": -2
 		}
 	}
 }
