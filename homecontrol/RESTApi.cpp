@@ -29,6 +29,8 @@ namespace {
 		addCommand(commandList, U("light"), U("*"), [&iJSONManager](const utility::string_t& value) { return iJSONManager.getLightState(stoi(value)); });
 		addCommand(commandList, U("setLightOn"), U("*"), [&iJSONManager](const utility::string_t& value) { return iJSONManager.setLightState(stoi(value), true); });
 		addCommand(commandList, U("setLightOff"), U("*"), [&iJSONManager](const utility::string_t& value) { return iJSONManager.setLightState(stoi(value), false); });
+		addCommand(commandList, U("setBTDevPresent"), U("*"), [&iJSONManager](const utility::string_t& value) { return iJSONManager.setBTDevPresent(stoi(value), true); });
+		addCommand(commandList, U("setBTDevNotPresent"), U("*"), [&iJSONManager](const utility::string_t& value) { return iJSONManager.setBTDevPresent(stoi(value), false); });
 		addCommand(commandList, U("presence"), U("*"), [&iJSONManager](const utility::string_t& value) { return iJSONManager.getPresence(); });
 
 		return commandList;

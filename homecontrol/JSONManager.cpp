@@ -6,6 +6,7 @@
 #include "Sensor.h"
 #include "MessageWithDirectAnswer.h"
 #include "MessageLightState.h"
+#include "BluetoothDevice.h"
 #include <cpprest/json.h>
 #include <chrono>
 #include <future>
@@ -112,6 +113,13 @@ web::json::value JSONManager::setLightState(unsigned int internalId, bool state)
 	m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::LightState, MessageLightState(internalId, state, L"")));
 	return getLightState(internalId);
 }
+
+web::json::value JSONManager::setBTDevPresent(unsigned int internalId, bool state) const
+{
+	m_RuntimeMessageHandler.SendMessage(Message(Cmd::Write, Id::BlootoothDevice, BluetoothDevice(internalId, L"", state)));
+	return getPresence();
+}
+
 
 web::json::value JSONManager::getAllLights() const
 {
