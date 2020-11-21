@@ -25,6 +25,8 @@ public:
 	web::json::value setBTDevPresent(unsigned int internalId, bool state) const override;
 	web::json::value getAllLights() const override;
 	web::json::value getPresence() const override;
+	web::json::value getVehicleState() const override;
+
 
 private:
 	struct IRuntimeMessageHandling& m_RuntimeMessageHandler;

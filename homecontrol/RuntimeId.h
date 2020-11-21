@@ -13,4 +13,5 @@ enum class runtimeId {
 	TelldusCommandLineManager,
 	ScheduleManager,
 	PresenceManager,
+	TeslaManager,
 };

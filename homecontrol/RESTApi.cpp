@@ -32,6 +32,7 @@ namespace {
 		addCommand(commandList, U("setBTDevPresent"), U("*"), [&iJSONManager](const utility::string_t& value) { return iJSONManager.setBTDevPresent(stoi(value), true); });
 		addCommand(commandList, U("setBTDevNotPresent"), U("*"), [&iJSONManager](const utility::string_t& value) { return iJSONManager.setBTDevPresent(stoi(value), false); });
 		addCommand(commandList, U("presence"), U("*"), [&iJSONManager](const utility::string_t& value) { return iJSONManager.getPresence(); });
+		addCommand(commandList, U("vehicleInformation"), U("*"), [&iJSONManager](const utility::string_t& value) { return iJSONManager.getVehicleState(); });
 
 		return commandList;
 	}

@@ -7,6 +7,7 @@
 #include "MessageWithDirectAnswer.h"
 #include "MessageLightState.h"
 #include "BluetoothDevice.h"
+#include "TeslaDataStructs.h"
 #include <cpprest/json.h>
 #include <chrono>
 #include <future>
@@ -55,6 +56,50 @@ namespace JSONHandlerN {
 		JSONHandlerN::setBool(json, U("on"), light.m_On);
 		JSONHandlerN::setString(json, U("name"), light.m_Name);
 	}
+
+	void setVehicleState(web::json::value& json, const TeslaDataStructs::vehicleState& vehicleState) {
+		JSONHandlerN::setBool(json, U("locked"), vehicleState.m_Locked);
+		JSONHandlerN::setDouble(json, U("odometer"), vehicleState.m_OdometerInKm);
+		JSONHandlerN::setBool(json, U("fd_window"), vehicleState.m_fp_window);
+		JSONHandlerN::setBool(json, U("fp_window"), vehicleState.m_fp_window);
+		JSONHandlerN::setBool(json, U("rd_window"), vehicleState.m_rd_window);
+		JSONHandlerN::setBool(json, U("rp_window"), vehicleState.m_rp_window);
+		JSONHandlerN::setBool(json, U("df"), vehicleState.m_df);
+		JSONHandlerN::setBool(json, U("dr"), vehicleState.m_dr);
+		JSONHandlerN::setBool(json, U("pf"), vehicleState.m_pf);
+		JSONHandlerN::setBool(json, U("pr"), vehicleState.m_pr);
+		JSONHandlerN::setBool(json, U("pr"), vehicleState.m_pr);
+		JSONHandlerN::setBool(json, U("rt"), vehicleState.m_rt);
+	}
+
+	void setDriveState(web::json::value& json, const TeslaDataStructs::driveState& driveState) {
+		JSONHandlerN::setUInt64(json, U("heading"), driveState.m_heading);
+		JSONHandlerN::setDouble(json, U("latitude"), driveState.m_latitude);
+		JSONHandlerN::setDouble(json, U("longitude"), driveState.m_longitude);
+		JSONHandlerN::setDouble(json, U("power"), driveState.m_power);
+		JSONHandlerN::setDouble(json, U("speed"), driveState.m_speed);
+	}
+
+	void setChargeState(web::json::value& json, const TeslaDataStructs::chargeState& chargeState) {
+		JSONHandlerN::setUInt64(json, U("usable_battery_level"), chargeState.m_Usable_battery_level);
+		JSONHandlerN::setDouble(json, U("battery_rangeInKM"), chargeState.m_EstimatedRangeInKm);
+		JSONHandlerN::setDouble(json, U("charger_actual_current"), chargeState.m_Charger_actual_current);
+		JSONHandlerN::setUInt64(json, U("charger_voltage"), chargeState.m_Charger_actual_voltage);
+		JSONHandlerN::setString(json, U("charging_state"), chargeState.m_Charging_state);
+		JSONHandlerN::setDouble(json, U("time_to_full_charge"), chargeState.m_Time_to_full_charge);
+    }
+
+	void setClimateState(web::json::value& json, const TeslaDataStructs::climateState& climateState) {
+		JSONHandlerN::setDouble(json, U("insideTemp"), climateState.m_Inside_temp);
+		JSONHandlerN::setDouble(json, U("outisde_temp"), climateState.m_Outisde_temp);
+		JSONHandlerN::setDouble(json, U("driver_temp_setting"), climateState.m_Driver_temp_setting);
+		JSONHandlerN::setDouble(json, U("passenger_temp_setting"), climateState.m_Passenger_temp_setting);
+		JSONHandlerN::setBool(json, U("seat_heater_left"), climateState.m_Seat_heater_left);
+		JSONHandlerN::setBool(json, U("seat_heater_right"), climateState.m_Seat_heater_right);
+	}
+
+
+
 }
 
 
@@ -156,5 +201,20 @@ web::json::value JSONManager::getPresence() const
 
 	return json;
 }
+
+
+web::json::value JSONManager::getVehicleState() const
+{
+	auto vehicleInformation = MassageWithDirectAnswer::SendAndRead<TeslaDataStructs::vehicleInformation>(m_RuntimeMessageHandler, Id::VehicleInformation, TeslaDataStructs::vehicleInformation());
+
+	web::json::value json;
+	JSONHandlerN::setVehicleState(json[U("respsonse")][U("vehicleState")], vehicleInformation.m_VehicleState);
+	JSONHandlerN::setDriveState(json[U("respsonse")][U("driveState")], vehicleInformation.m_DriveState);
+	JSONHandlerN::setChargeState(json[U("respsonse")][U("chargeState")], vehicleInformation.m_ChargeState);
+	JSONHandlerN::setClimateState(json[U("respsonse")][U("climateState")], vehicleInformation.m_ClimateState);
+
+	return json;
+}
+
 
 

@@ -20,6 +20,7 @@
 #include "CommandLineManager.h"
 #include "TelldusCommandLineManager.h"
 #include "ScheduleManager.h"
+#include "TeslaManager.h"
 
 class ProgramManager
 {
@@ -49,6 +50,7 @@ private:
 	CommandLineManager      m_CommandLineManager;
 	TelldusCommandLineManager m_TelldusCommandLineManager;
 	ScheduleManager           m_ScheduleManager;
+	TeslaManager              m_TeslaManager;
 	//SonosManager            m_SonosManager;
 };
 

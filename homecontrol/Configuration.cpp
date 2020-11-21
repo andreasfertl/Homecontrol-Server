@@ -106,6 +106,38 @@ namespace {
 		return ConfigurationSonos(L"", L"", L"", L"", L"", L"", L"", { L"", L"" , L"" , L"" }); //proceeding with a "empty" configuration
 	}
 
+	ConfigurationTeslaManager ReadTeslaConfiguration(std::optional<web::json::value> configuration) {
+
+		try {
+			auto& teslaConf = configuration.value();
+
+			if (!teslaConf.is_null())
+			{
+				return ConfigurationTeslaManager(
+					{
+						StringTools::AsWstring(teslaConf[U("configToken")][U("access_token")].as_string()),
+						StringTools::AsWstring(teslaConf[U("configToken")][U("refresh_token")].as_string()),
+						StringTools::AsWstring(teslaConf[U("configToken")][U("token_type")].as_string()),
+						StringTools::AsWstring(teslaConf[U("configToken")][U("scope")].as_string()),
+					},
+					StringTools::AsWstring(teslaConf[U("controlUrl")].as_string()),
+					StringTools::AsWstring(teslaConf[U("vehicleId")].as_string()),
+					teslaConf[U("retryWakeUps")].as_integer(),
+					teslaConf[U("retrySleepInSeconds")].as_integer(),
+					teslaConf[U("fastReadTimeInSeconds")].as_integer(),
+					teslaConf[U("verySlowReadTimeInSeconds")].as_integer(),
+					teslaConf[U("maxSlowingRateForVerySlowReads")].as_integer()
+				);
+			}
+		}
+		catch (...) {
+		}
+
+		//error....
+		return ConfigurationTeslaManager({ L"", L"" , L"" , L"" }, L"", L"", 3, 30, 60, 1800, 3); //proceeding with a "empty" configuration
+	}
+
+
 
 	std::vector<ConfigurationLights> ReadConfiguredLights(std::optional<web::json::value>& config) {
 
@@ -277,9 +309,6 @@ namespace {
 		//error....
 		return ConfigurationScheduleManager(std::vector<Schedule>(),0); //proceeding with a "empty" configuration
 	}
-
-
-
 }
 
 class ImplConfiguration : public IGetConfiguration
@@ -293,7 +322,8 @@ public:
 		m_ConfigurationTelldus(ReadTelldusConfiguration(GetConfigSection(L"Telldus", m_ConfigFileContent))),
 		m_ConfigurationRemoteManager(ReadRemoteManagerConfiguration(GetConfigSection(L"RemoteManager", m_ConfigFileContent))),
 		m_ConfigurationSensorManager(ReadSensorManagerConfigurationConfiguration(GetConfigSection(L"Sensors", m_ConfigFileContent))),
-		m_ConfigurationScheduleManager(ReadScheduleManagerConfigurationConfiguration(GetConfigSection(L"Scheduler", m_ConfigFileContent)))
+		m_ConfigurationScheduleManager(ReadScheduleManagerConfigurationConfiguration(GetConfigSection(L"Scheduler", m_ConfigFileContent))),
+		m_ConfigurationTeslaManager(ReadTeslaConfiguration(GetConfigSection(L"Tesla", m_ConfigFileContent)))
 	{
 	}
 	
@@ -325,6 +355,11 @@ public:
 		return m_ConfigurationScheduleManager;
 	}
 
+	const ConfigurationTeslaManager& GetConfigurationTeslaManager() override {
+		return m_ConfigurationTeslaManager;
+	}
+	
+
 private:
 	struct IPrint& m_IPrint;
 	std::wstring m_ConfigFileContent;
@@ -334,6 +369,7 @@ private:
 	const ConfigurationRemoteManager m_ConfigurationRemoteManager;
 	const ConfigurationSensorManager m_ConfigurationSensorManager;
 	const ConfigurationScheduleManager m_ConfigurationScheduleManager;
+	const ConfigurationTeslaManager m_ConfigurationTeslaManager;
 };
 
 

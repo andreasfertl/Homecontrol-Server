@@ -18,6 +18,7 @@ enum class Id {
 	Lights = 24,
 	CommandLine = 25,
 	Presence = 26,
+	VehicleInformation = 27,
 };
 
 enum class Cmd {

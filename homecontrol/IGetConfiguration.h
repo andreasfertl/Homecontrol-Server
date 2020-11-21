@@ -135,6 +135,30 @@ public:
 	const int m_UTCOffset;
 };
 
+struct ConfigurationTeslaManager {
+public:
+	ConfigurationTeslaManager(const configToken& configToken, const std::wstring& controlUrl, const std::wstring& vehicleId, unsigned int retryWakeUps, unsigned int retrySleepInSeconds, unsigned int fastReadTimeInSeconds, unsigned int verySlowReadTimeInSeconds, unsigned int maxSlowingRateForVerySlowReads)
+		: m_ConfigToken(configToken)
+		, m_controlUrl(controlUrl)
+		, m_vehicleId(vehicleId)
+		, m_retryWakeUps(retryWakeUps)
+		, m_retrySleepInSeconds(retrySleepInSeconds)
+		, m_fastReadTimeInSeconds(fastReadTimeInSeconds)
+		, m_verySlowReadTimeInSeconds(verySlowReadTimeInSeconds)
+		, m_maxSlowingRateForVerySlowReads(maxSlowingRateForVerySlowReads)
+	{
+	}
+
+	const configToken m_ConfigToken;
+	const std::wstring m_controlUrl;
+	const std::wstring m_vehicleId;
+	const unsigned int m_retryWakeUps;
+	const unsigned int m_retrySleepInSeconds;
+	const unsigned int m_fastReadTimeInSeconds;
+	const unsigned int m_verySlowReadTimeInSeconds;
+	const unsigned int m_maxSlowingRateForVerySlowReads;
+};
+
 
 
 struct IConfigurationSonos {
@@ -161,7 +185,10 @@ struct IConfigurationScheduleManager {
 	virtual const ConfigurationScheduleManager& GetConfigurationScheduleManager() = 0;
 };
 
+struct IConfigurationTeslaManager {
+	virtual const ConfigurationTeslaManager& GetConfigurationTeslaManager() = 0;
+};
 
-struct IGetConfiguration : public IConfigurationSonos, public IConfigurationTelldus, public IConfigurationPhilipsHue, public IConfigurationRemoteManager, public IConfigurationSensorManager, public IConfigurationScheduleManager {
+struct IGetConfiguration : public IConfigurationSonos, public IConfigurationTelldus, public IConfigurationPhilipsHue, public IConfigurationRemoteManager, public IConfigurationSensorManager, public IConfigurationScheduleManager, public IConfigurationTeslaManager {
 
 };

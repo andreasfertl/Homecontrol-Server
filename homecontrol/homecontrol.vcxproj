@@ -198,6 +198,7 @@
     <ClInclude Include="IRuntimeRegister.h" />
     <ClInclude Include="Logging.h" />
     <ClInclude Include="MandloynSensor.h" />
+    <ClInclude Include="OneShotTimer.h" />
     <ClInclude Include="PresenceManager.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="MessageLightState.h" />
@@ -229,6 +230,9 @@
     <ClInclude Include="TCPHandler.h" />
     <ClInclude Include="TelldusCommandLineManager.h" />
     <ClInclude Include="TelldusManager.h" />
+    <ClInclude Include="TeslaConnection.h" />
+    <ClInclude Include="TeslaDataStructs.h" />
+    <ClInclude Include="TeslaManager.h" />
     <ClInclude Include="Thread.h" />
     <ClInclude Include="ThreadManager.h" />
     <ClInclude Include="RuntimeId.h" />
@@ -242,6 +246,7 @@
     <ClCompile Include="HueManager.cpp" />
     <ClCompile Include="JSONManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="OneShotTimer.cpp" />
     <ClCompile Include="PresenceManager.cpp" />
     <ClCompile Include="Message.cpp" />
     <ClCompile Include="networkMessageHandler.cpp" />
@@ -266,6 +271,8 @@
     <ClCompile Include="TCPHandler.cpp" />
     <ClCompile Include="TelldusCommandLineManager.cpp" />
     <ClCompile Include="TelldusManager.cpp" />
+    <ClCompile Include="TeslaConnection.cpp" />
+    <ClCompile Include="TeslaManager.cpp" />
     <ClCompile Include="Thread.cpp" />
     <ClCompile Include="ThreadManager.cpp" />
     <ClCompile Include="Timer.cpp" />

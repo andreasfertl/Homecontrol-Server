@@ -10,7 +10,12 @@ namespace MassageWithDirectAnswer {
 		
 		std::function<void(Message)> answerCallback = [&value](Message answMessage) {
 			if (auto rxData = answMessage.GetValue<T>()) {
-				value.set_value(*rxData);
+				try {
+					value.set_value(*rxData);
+				}
+				catch (...) {
+					;
+				}
 			}
 		};
 

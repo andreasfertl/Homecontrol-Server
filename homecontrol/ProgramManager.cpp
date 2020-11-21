@@ -20,15 +20,19 @@ ProgramManager::ProgramManager(IPrint& iPrint) :
 	m_SensorManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription),
 	m_JSONManager(m_ThreadManager),
 	m_RESTApi(m_JSONManager),
-	m_HTTPServer(iPrint, L"http://192.168.68.116:40000/v1/", m_RESTApi),
+	m_HTTPServer(iPrint, L"http://192.168.68.130:40000/v1/", m_RESTApi),
+	//m_HTTPServer(iPrint, L"http://172.21.74.9:40000/v1/", m_RESTApi),
 	m_NetworkReceiveHandler(iPrint),
 	m_NetworkMessageHandler(iPrint, m_ThreadManager, m_Subscription, m_JSONManager),
 	m_TCPHandler(30000, m_NetworkReceiveHandler, [&iPrint](std::wstring loggme) { Logg(iPrint, loggme); }),
 	m_CommandLineManager(iPrint, m_ThreadManager, m_Subscription),
 	m_TelldusCommandLineManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription),
-	m_ScheduleManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription)
+	m_ScheduleManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription),
+	m_TeslaManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription)
 	//m_SonosManager(iPrint, m_Configuration.IGetConfiguration(), m_ThreadManager, m_Subscription)
 {
+
+
 }
 
 
