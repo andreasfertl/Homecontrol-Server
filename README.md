@@ -140,6 +140,21 @@ To use this you need to register a developer account for Sonos and configure you
 			"secret": "secret",
 			"tokenUrl": "https://api.sonos.com/login/v3/oauth/access"
 		},
+		"Tesla": {
+			"configToken": {
+				"access_token": "AccessToken",
+				"refresh_token": "-",
+				"scope": "-",
+				"token_type": "Bearer"
+			},
+			"controlUrl": "https://owner-api.teslamotors.com/api/1/vehicles",
+			"vehicleId": "vehicleID",
+			"retryWakeUps": 3,
+			"retrySleepInSeconds": 30,
+			"fastReadTimeInSeconds": 60,
+			"verySlowReadTimeInSeconds": 1800,
+			"maxSlowingRateForVerySlowReads": 3
+		},
 		"Scheduler": {
 			"Schedules": [
 				{
