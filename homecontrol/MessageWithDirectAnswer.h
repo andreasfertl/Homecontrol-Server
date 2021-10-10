@@ -23,7 +23,7 @@ namespace MassageWithDirectAnswer {
 		iRuntime.SendMessage(Message(Cmd::ReadWithDirectAnswer, id, data, answerCallback));
 
 		//waiting for answer
-		auto status = valueFuture.wait_for(std::chrono::milliseconds(500));
+		auto status = valueFuture.wait_for(std::chrono::milliseconds(1000));
 		if (status == std::future_status::ready)
 			return valueFuture.get();
 		else

@@ -21,6 +21,7 @@
 #include "TelldusCommandLineManager.h"
 #include "ScheduleManager.h"
 #include "TeslaManager.h"
+#include "HTTPManager.h"
 
 class ProgramManager
 {
@@ -43,6 +44,7 @@ private:
 	SensorManager           m_SensorManager;
 	JSONManager             m_JSONManager;
 	RESTApi                 m_RESTApi;
+	HTTPManager             m_HTTPManager;
 	HTTPServer				m_HTTPServer;
 	netWorkReceiveHandler   m_NetworkReceiveHandler;
 	networkMessageHandler   m_NetworkMessageHandler;
@@ -50,7 +52,7 @@ private:
 	CommandLineManager      m_CommandLineManager;
 	TelldusCommandLineManager m_TelldusCommandLineManager;
 	ScheduleManager           m_ScheduleManager;
-	TeslaManager              m_TeslaManager;
+	//TeslaManager              m_TeslaManager;
 	//SonosManager            m_SonosManager;
 };
 

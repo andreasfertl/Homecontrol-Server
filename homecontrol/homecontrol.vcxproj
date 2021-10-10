@@ -171,11 +171,13 @@
     <ClInclude Include="BluetoothDevice.h" />
     <ClInclude Include="CommandLineManager.h" />
     <ClInclude Include="Configuration.h" />
+    <ClInclude Include="HTTPManager.h" />
     <ClInclude Include="HTTPServer.h" />
     <ClInclude Include="HueClient.h" />
     <ClInclude Include="ICallbacks.h" />
     <ClInclude Include="IGetConfiguration.h" />
     <ClInclude Include="IGetSensor.h" />
+    <ClInclude Include="iHTTPHandler.h" />
     <ClInclude Include="IJSONManager.h" />
     <ClInclude Include="iNetworkReceive.h" />
     <ClInclude Include="IOauth2.h" />
@@ -184,6 +186,7 @@
     <ClInclude Include="IRuntimeMessageProcessing.h" />
     <ClInclude Include="ISonosCMDs.h" />
     <ClInclude Include="ISonosConnection.h" />
+    <ClInclude Include="JsonHelper.h" />
     <ClInclude Include="JSONManager.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightState.h" />
@@ -241,9 +244,11 @@
   <ItemGroup>
     <ClCompile Include="CommandLineManager.cpp" />
     <ClCompile Include="Configuration.cpp" />
+    <ClCompile Include="HTTPManager.cpp" />
     <ClCompile Include="HTTPServer.cpp" />
     <ClCompile Include="HueClient.cpp" />
     <ClCompile Include="HueManager.cpp" />
+    <ClCompile Include="JsonHelper.cpp" />
     <ClCompile Include="JSONManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="OneShotTimer.cpp" />

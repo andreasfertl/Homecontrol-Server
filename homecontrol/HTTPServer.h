@@ -5,7 +5,7 @@
 class HTTPServer {
 
 public:
-	HTTPServer(struct IPrint& iLogger, const std::wstring& url, struct iRESTApi& receiveCallback);
+	HTTPServer(struct IPrint& iLogger, const std::wstring& url, struct IHTTPHandler& httpHandler);
 	~HTTPServer();
 
 	HTTPServer(const HTTPServer&) = delete;

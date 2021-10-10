@@ -5,14 +5,14 @@
 #include "iRESTApi.h"
 #include "Logging.h"
 #include "StringTools.h"
-
+#include "iHTTPHandler.h"
 
 class HTTPServerImpl {
 
 public:
-	HTTPServerImpl(struct IPrint& iLogger, const std::wstring& url, const iRESTApi& receiveCallback) :
+	HTTPServerImpl(struct IPrint& iLogger, const std::wstring& url, IHTTPHandler& httpHandler) :
 		m_ILogger(iLogger),
-		m_ReceiveCallback(receiveCallback),
+		m_HttpHandler(httpHandler),
 		m_listener(utility::conversions::to_string_t(StringTools::AsString(url)))
 	{
 		m_listener.support(web::http::methods::GET, std::bind(&HTTPServerImpl::get, this, std::placeholders::_1));
@@ -51,31 +51,26 @@ public:
 
 private:
 	void get(web::http::http_request request) {
-
-		if (auto response = m_ReceiveCallback.parseGetReqeust(web::uri::split_query(request.request_uri().query()))) {
-			request.reply(web::http::status_codes::OK, *response).wait();
-		}
-		else {
-			request.reply(web::http::status_codes::BadRequest, U("error in request")).wait();
-		}
+		return m_HttpHandler.get(request);
 	}
 
 	void put(web::http::http_request message) {
+		return m_HttpHandler.put(message);
 	}
 
 	void post(web::http::http_request message) {
-		return get(message);
+		return m_HttpHandler.post(message);
 	}
 
 	IPrint& m_ILogger;
-	const iRESTApi& m_ReceiveCallback;
+	IHTTPHandler& m_HttpHandler;
 	web::http::experimental::listener::http_listener m_listener;
 };
 
 
 
-HTTPServer::HTTPServer(struct IPrint& iLogger, const std::wstring& url, struct iRESTApi& receiveCallback) :
-	m_HTTPServerImpl(std::make_unique<HTTPServerImpl>(iLogger, url, receiveCallback))
+HTTPServer::HTTPServer(struct IPrint& iLogger, const std::wstring& url, IHTTPHandler& httpHandler) :
+	m_HTTPServerImpl(std::make_unique<HTTPServerImpl>(iLogger, url, httpHandler))
 {
 }
 

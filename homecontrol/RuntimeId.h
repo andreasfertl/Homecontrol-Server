@@ -14,4 +14,5 @@ enum class runtimeId {
 	ScheduleManager,
 	PresenceManager,
 	TeslaManager,
+	HTTPManager,
 };
