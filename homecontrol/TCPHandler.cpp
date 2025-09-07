@@ -7,6 +7,7 @@
 #include <memory>
 #include "TCPHandler.h"
 #include <list>
+#include <map>
 #include <boost/asio.hpp>
 #include <boost/asio/buffer.hpp>
 #include <boost/asio/spawn.hpp>
@@ -32,10 +33,10 @@ class connection{
 	};
 
 public:
-	connection(boost::asio::ip::tcp::acceptor& acceptor, boost::asio::yield_context& yield, boost::asio::io_service& ioService,
+	connection(boost::asio::ip::tcp::acceptor& acceptor, boost::asio::yield_context& yield, boost::asio::io_context& ioContext,
 		       const iNetworkReceive& receiveCallback, const std::function<void()>& disconnectCallback, std::function<void(std::wstring)> logger) :
 		m_Logger(logger),
-		m_Socket(ioService),
+		m_Socket(ioContext),
 		m_RxBuffer(),
 		m_ReceiveCallback(receiveCallback),
 		m_DisconnectCallback(disconnectCallback) 
@@ -123,20 +124,20 @@ public:
 	TCPHandlerImpl(unsigned int portNr, const iNetworkReceive& receiveCallback, std::function<void(std::wstring)> logger) :
 		m_Logger(logger),
 		m_StopFlag(false),
-		m_IOService(),
-		m_Acceptor(m_IOService, ::boost::asio::ip::tcp::endpoint(::boost::asio::ip::tcp::v4(), portNr)),
+		m_IOContect(),
+		m_Acceptor(m_IOContect, ::boost::asio::ip::tcp::endpoint(::boost::asio::ip::tcp::v4(), portNr)),
 		m_ReceiveCallback(receiveCallback),
 		m_Connections(),
-		m_Handler([this]() { this->m_IOService.run(); })
+		m_Handler([this]() { this->m_IOContect.run(); })
 	{
 		m_Acceptor.listen();
-		spawn(m_IOService, boost::bind(&TCPHandlerImpl::accept, this, boost::placeholders::_1));
+		spawn(m_IOContect, boost::bind(&TCPHandlerImpl::accept, this, boost::placeholders::_1));
 	}
 
 	~TCPHandlerImpl()
 	{
 		m_StopFlag = true;
-		m_IOService.stop();
+		m_IOContect.stop();
 		if (m_Handler.joinable())
 			m_Handler.join();
 	}
@@ -161,7 +162,7 @@ public:
 
 			//do we handle already to many sessions?
 			while (m_Connections.size() >= network::connectionHandleMAXValue) {
-				m_IOService.post(yield);
+				post(m_IOContect, yield);
 				cleanupDisconnectedSessions(); //kind of wait for next slot
 			}
 
@@ -169,7 +170,7 @@ public:
 			while (!inserted && m_Connections.size() < network::connectionHandleMAXValue)
 			{
 				//instance one client connection and wait for next
-				inserted = m_Connections.try_emplace(handle, m_Acceptor, yield, m_IOService, m_ReceiveCallback, std::bind(&TCPHandlerImpl::disconnect, this, handle), m_Logger).second;
+				inserted = m_Connections.try_emplace(handle, m_Acceptor, yield, m_IOContect, m_ReceiveCallback, std::bind(&TCPHandlerImpl::disconnect, this, handle), m_Logger).second;
 
 				if (handle >= network::connectionHandleMAXValue)
 					handle = 1; //restart to find next free handle
@@ -191,7 +192,7 @@ public:
 private:
 	std::function<void(std::wstring)>                m_Logger;
 	std::atomic_bool				                 m_StopFlag;
-	boost::asio::io_service                          m_IOService;
+	boost::asio::io_context                          m_IOContect;
 	boost::asio::ip::tcp::acceptor                   m_Acceptor;
 	const iNetworkReceive&                           m_ReceiveCallback;
 	std::map<network::connectionHandle, connection>  m_Connections;
